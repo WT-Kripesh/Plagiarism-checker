@@ -15,8 +15,8 @@ def extract_text_from_pdf(pdf_path):
         return None
 
 
-file_1_path = "Ai_Lab1.pdf"
-file_2_path = "Ai_Lab3.pdf"
+file_1_path = "file3.pdf"
+file_2_path = "file4.pdf"
 
 
 #Manual tokenization
@@ -24,7 +24,7 @@ separators = r'[^\w\d]+'
 def tokenize_the_text(raw_text):
     raw_text = raw_text.lower()
     result = re.split(separators, raw_text)
-    result.remove('')
+    #result.remove('')
     return result
 # Comprehensive separator pattern
 
@@ -39,7 +39,7 @@ word_count_dict1 = defaultdict(int)
 word_count_dict2 = defaultdict(int)
 
 for word in text1:
-    word_count_dict1[word] += 1
+    word_count_dict1[word] += 1     # eg:word_count_dict1[apple]=3 means the number of word "apple" in the text is 3
 
 for word in text2:
     word_count_dict2[word] += 1
@@ -49,11 +49,14 @@ for word in text2:
 # Calculating Denominator
 sum_of_the_squares_1 = 0
 for item in word_count_dict1:
+    print (item , word_count_dict1[item],word_count_dict2[item])
     sum_of_the_squares_1 += (word_count_dict1[item] ** 2)
 square_root_of_sum_of_the_squares_1 = sum_of_the_squares_1 ** (1/2)
 
 sum_of_the_squares_2 = 0
+
 for item in word_count_dict2:
+    #print (item , word_count_dict2[item],end="***")
     sum_of_the_squares_2 += (word_count_dict2[item] ** 2)
 square_root_of_sum_of_the_squares_2 = sum_of_the_squares_2 ** (1/2)
 
@@ -64,6 +67,7 @@ numerator = 0
 common_words_in_both_dictionaries = set( word_count_dict1.keys() ) & set( word_count_dict2.keys() )
 
 for word in common_words_in_both_dictionaries:
+    #print (word_count_dict1[word]," " ,word_count_dict2[word])
     numerator += word_count_dict1[word] * word_count_dict2[word]
 
 
