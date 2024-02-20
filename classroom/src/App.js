@@ -7,7 +7,7 @@ function App() {
     <Router>
       <Routes>
         <Route exact path="/test">
-          1Hello
+          Hello
         </Route>
       </Routes>
     </Router>
