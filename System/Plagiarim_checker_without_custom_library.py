@@ -15,8 +15,8 @@ def extract_text_from_pdf(pdf_path):
         return None
 
 
-file_1_path = "file3.pdf"
-file_2_path = "file4.pdf"
+file_1_path = "files/file3.pdf"
+file_2_path = "files/file4.pdf"
 
 
 #Manual tokenization
