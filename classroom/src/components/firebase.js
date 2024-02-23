@@ -18,7 +18,7 @@ const googleProvider = new firebase.auth.GoogleAuthProvider();
 // Sign in and check or create account in firestore
 const signInWithGoogle = async () => {
   try {
-    const response = await auth.signInWithPopup(googleProvider);
+    const response = await auth.signInWithRedirect(googleProvider);
     console.log(response.user);
     const user = response.user;
     console.log(`User ID - ${user.uid}`);
@@ -38,8 +38,8 @@ const signInWithGoogle = async () => {
   }
 };
 
-const logout = () => {
+const Logout = () => {
   auth.signOut();
 };
 
-export { app, auth, db, signInWithGoogle, logout };
+export { app, auth, db, signInWithGoogle, Logout };

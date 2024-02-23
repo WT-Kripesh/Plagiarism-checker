@@ -1,6 +1,7 @@
 import React from 'react'
 import "./home.css";
 import classroomgif from "./gif.gif"
+import { signInWithGoogle} from "./firebase"
 
 function home() {
   return (
@@ -11,7 +12,7 @@ function home() {
       alt="Google Classroom Image"
       className="home__image"
     />
-    <button className="home__login">
+    <button className="home__login" onClick={signInWithGoogle}>
       Login with Google
     </button>
   </div>
