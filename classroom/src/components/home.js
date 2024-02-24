@@ -1,14 +1,14 @@
 import React from 'react';
 import './home.css';
 import { signInWithGoogle } from './firebase';
-import classroomgif from '../../public/gif.gif';
+import classroomlogo from './logo.png';
 
 function Home() {
   return (
     <div className="home">
       <div className="home__container">
         <img
-          src={classroomgif}
+          src={classroomlogo}
           alt="Google Classroom Image"
           className="home__image"
         />

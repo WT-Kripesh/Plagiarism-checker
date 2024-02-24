@@ -1,13 +1,3 @@
-// const firebaseConfig = {
-//   apiKey: "AIzaSyBYoANYkWlSA5W3zoK0Rqq93EgZpzm_0cg",
-//   authDomain: "classroom-minor.firebaseapp.com",
-//   projectId: "classroom-minor",
-//   storageBucket: "classroom-minor.appspot.com",
-//   messagingSenderId: "39481730582",
-//   appId: "1:39481730582:web:c9ec31b0107b6bac177737",
-//   measurementId: "G-QFYFD4VEY6"
-// };
-
 import { initializeApp } from "firebase/app";
 import {
   GoogleAuthProvider,
@@ -81,15 +71,7 @@ const registerWithEmailAndPassword = async (name, email, password) => {
     alert(err.message);
   }
 };
-const sendPasswordReset = async (email) => {
-  try {
-    await sendPasswordResetEmail(auth, email);
-    alert("Password reset link sent!");
-  } catch (err) {
-    console.error(err);
-    alert(err.message);
-  }
-};
+
 const logout = () => {
   signOut(auth);
 };
@@ -99,7 +81,6 @@ export {
   signInWithGoogle,
   logInWithEmailAndPassword,
   registerWithEmailAndPassword,
-  sendPasswordReset,
   logout,
 };
 
