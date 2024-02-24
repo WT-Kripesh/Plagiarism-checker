@@ -75,6 +75,8 @@ def calculate_cosine_similarity(file_path_1, file_path_2, n):
         numerator += word_count_dict1[word] * word_count_dict2[word]
     
     cosTheta = numerator / denominator
+    if cosTheta>1:
+        cosTheta=1
     Theta = math.acos(cosTheta)
 
     y = ((-2/math.pi)*Theta) + 1
@@ -130,4 +132,4 @@ def get_list_of_groups_of_plagiarized(folder_name):
     return list_of_groups
 
 
-print(get_list_of_groups_of_plagiarized("pdfs"))
+print(get_list_of_groups_of_plagiarized("files"))
