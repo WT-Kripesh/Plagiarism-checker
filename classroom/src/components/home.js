@@ -1,23 +1,23 @@
-import React from 'react'
-import "./home.css";
-import classroomgif from "./gif.gif"
-import { signInWithGoogle} from "./firebase"
+import React from 'react';
+import './home.css';
+import { signInWithGoogle } from './firebase';
+import classroomgif from '../../public/gif.gif';
 
-function home() {
+function Home() {
   return (
     <div className="home">
-  <div className="home__container">
-    <img
-      src= {classroomgif} //"https://upload.wikimedia.org/wikipedia/commons/5/59/Google_Classroom_Logo.png"
-      alt="Google Classroom Image"
-      className="home__image"
-    />
-    <button className="home__login" onClick={signInWithGoogle}>
-      Login with Google
-    </button>
-  </div>
-</div>
-  )
+      <div className="home__container">
+        <img
+          src={classroomgif}
+          alt="Google Classroom Image"
+          className="home__image"
+        />
+        <button className="home__login" onClick={signInWithGoogle} >
+          Login with Google
+        </button>
+      </div>
+    </div>
+  );
 }
 
-export default home
+export default Home;
