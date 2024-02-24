@@ -1,9 +1,9 @@
 import React from 'react';
+import Home from "./components/home";
 import Login from "./components/login";
 import Register from "./components/register";
-import Home from "./components/home";
+import Dashboard from "./components/dashboard";
 import Navbar from './components/navbar';
-import dashboard from './utils/dashboard';
 import { BrowserRouter as 
   Router, Route, Routes} from "react-router-dom";
 
@@ -11,10 +11,10 @@ function App() {
   return <div className="app">
     <Router>
       <Routes>
+        <Route exact path="/test" element={<Home />}></Route>
         <Route exact path="/" element={<Login />} ></Route>
         <Route exact path="/register" element={<Register />} ></Route>
-        <Route exact path="/dashboard" element={<Home />} 
-        Component={()=> <Navbar />} >
+        <Route exact path="/dashboard" element={<Dashboard />} Component={()=> <Navbar />} >
         </Route>
 
       </Routes>
