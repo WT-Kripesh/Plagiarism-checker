@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useNavigate } from "react-router-dom";
-import "./dashboard.css";
+import "./styles/dashboard.css";
 import { auth, db, logout } from "./firebase";
 import { query, collection, getDocs, where } from "firebase/firestore";
+import classroomlogo from './logo.png';
 
 function Dashboard() {
   const [user, loading, error] = useAuthState(auth);
@@ -28,6 +29,11 @@ function Dashboard() {
   return (
     <div className="dashboard">
        <div className="dashboard__container">
+       <img
+          src={classroomlogo}
+          alt="Google Classroom Image"
+          className="home__image"
+        />
         Logged in as
          <div>{name}</div>
          <div>{user?.email}</div>

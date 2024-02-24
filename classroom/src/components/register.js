@@ -6,7 +6,8 @@ import {
   registerWithEmailAndPassword,
   signInWithGoogle,
 } from "./firebase";
-import "./register.css";
+import "./styles/register.css";
+import classroomlogo from './logo.png';
 
 function Register() {
   const [email, setEmail] = useState("");
@@ -25,6 +26,10 @@ function Register() {
   return (
     <div className="register">
       <div className="register__container">
+        <img src={classroomlogo}
+          alt="Google Classroom Image"
+          className="home__image"
+        />
         <input
           type="text"
           className="register__textBox"

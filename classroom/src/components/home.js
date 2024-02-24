@@ -1,5 +1,5 @@
 import React from 'react';
-import './home.css';
+import './styles/home.css';
 import { signInWithGoogle } from './firebase';
 import classroomlogo from './logo.png';
 
