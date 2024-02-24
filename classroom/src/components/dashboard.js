@@ -32,7 +32,7 @@ function Dashboard() {
        <img
           src={classroomlogo}
           alt="Google Classroom Image"
-          className="home__image"
+          className="image"
         />
         Logged in as
          <div>{name}</div>

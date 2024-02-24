@@ -15,6 +15,8 @@
   .login__textBox {
     padding: 10px;
     font-size: 18px;
+    border-radius: 7px;
+    border: #7e6d6d;
     margin-bottom: 10px;
   }
   .login__btn {
@@ -22,12 +24,20 @@
     font-size: 18px;
     margin-bottom: 10px;
     border: none;
+    border-radius: 7px;
     color: white;
-    background-color: black;
+    background-color: #4285f4;
+  }
+  .login__btn:hover{
+    cursor:pointer;
   }
   .login__google {
-    background-color: #4285f4;
+    background-color: #c91111;
   }
   .login div {
     margin-top: 7px;
+  }
+  .image{
+    margin-top: 8px;
+    margin-bottom: 10px;
   }

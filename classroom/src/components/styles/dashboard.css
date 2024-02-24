@@ -17,9 +17,17 @@
     font-size: 18px;
     margin-top: 10px;
     border: none;
+    border-radius: 7px;
     color: white;
     background-color: black;
   }
+  .dashboard__btn:hover{
+    cursor:pointer;
+  }
   .dashboard div {
     margin-top: 7px;
+  }
+  .image{
+    margin-top: 8px;
+    margin-bottom: 10px;
   }

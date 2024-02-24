@@ -23,7 +23,7 @@ function Login() {
       <img
           src={classroomlogo}
           alt="Google Classroom Image"
-          className="home__image"
+          className="image"
         />  
         <input
           type="text"
@@ -48,7 +48,7 @@ function Login() {
         <button className="login__btn login__google" onClick={signInWithGoogle}>
           Login with Google
         </button>
-        <div>
+        <div style={{fontSize:'16px'}}>
           Don't have an account? <Link to="/register">Register</Link> now.
         </div>
       </div>
