@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useNavigate } from "react-router-dom";
 import "./styles/dashboard.css";
-import { auth, db, logout } from "./firebase";
+import { auth, db, logout } from "../components/firebase";
 import { query, collection, getDocs, where } from "firebase/firestore";
-import classroomlogo from './logo.png';
+import classroomlogo from '../components/logo.png';
 
 function Dashboard() {
   const [user, loading, error] = useAuthState(auth);

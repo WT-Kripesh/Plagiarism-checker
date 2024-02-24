@@ -5,9 +5,9 @@ import {
   auth,
   registerWithEmailAndPassword,
   signInWithGoogle,
-} from "./firebase";
+} from "../components/firebase";
 import "./styles/register.css";
-import classroomlogo from './logo.png';
+import classroomlogo from '../components/logo.png';
 
 function Register() {
   const [email, setEmail] = useState("");

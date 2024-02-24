@@ -4,9 +4,9 @@ import React, { useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useRecoilState } from "recoil";
 import { auth, logout } from "./firebase";
-import { createDialogAtom, joinDialogAtom } from "../utils/atom";
-import CreateClass from "../utils/createclass";
-import JoinClass from "../utils/joinclass";
+import { createDialogAtom, joinDialogAtom } from "./atom";
+import CreateClass from "./createclass";
+import JoinClass from "./joinclass";
 import "./styles/navbar.css";
 function Navbar() {
   const [user, loading, error] = useAuthState(auth);

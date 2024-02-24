@@ -10,7 +10,7 @@ TextField,
 import React, { useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useRecoilState } from "recoil";
-import { auth, db } from "../components/firebase";
+import { auth, db } from "./firebase";
 import { joinDialogAtom } from "./atom";
 function JoinClass() {
 const [open, setOpen] = useRecoilState(joinDialogAtom);
