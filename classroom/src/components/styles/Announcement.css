@@ -22,7 +22,7 @@
 }
 
 .announcement__name {
-  font-weight: 600;
+  font-weight: 400;
 }
 
 .announcement__date {
@@ -37,6 +37,27 @@
   border-radius: 9999px;
 }
 
-.announcement__content {
-  margin-top: 15px;
+.buttonContainer {
+  flex: 1; /* This allows the button container to take up remaining space */
+  display: flex;
+  justify-content: flex-end; /* Align button to the right */
+  align-items: center;
 }
+.assignment__upload {
+  margin-top: 6px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 6px;
+  border: none;
+    border-radius: 10px;
+    color: white;
+    background-color: #4285f4;
+}
+.assignment__handin {
+  margin-left:10px ;
+  padding-left: 40px;
+  padding-right: 35px;
+  background-color: rgb(12, 148, 12);
+}
+

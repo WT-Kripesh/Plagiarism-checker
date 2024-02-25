@@ -9,7 +9,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import Announcement from "../components/Announcement";
 import { auth, db } from "../components/firebase";
 import "./styles/Class.css";
-import { getDoc ,doc,onSnapshot} from "firebase/firestore";
+import { getDoc ,setDoc,doc,onSnapshot} from "firebase/firestore";
 
 function Class() {
   const [classData, setClassData] = useState({});
@@ -32,25 +32,35 @@ function Class() {
 
   const createPost = async () => {
     try {
-      const myClassRef = await getDoc(doc(db,"classes",id));
-      const myClassData = await myClassRef.data();
-      console.log(myClassData);
-      let tempPosts = myClassData.posts;
-      tempPosts.push({
-        authorId: user.uid,
-        content: announcementContent,
-        date: moment().format("MMM Do YY"),
-        image: user.photoURL,
-        name: user.displayName,
-      });
-      myClassRef.ref.update({
-        posts: tempPosts,
-      });
+      const myClassRef = doc(db, "classes", id);
+      const myClassSnap = await getDoc(myClassRef);
+  
+      if (myClassSnap.exists()) {
+        const myClassData = myClassSnap.data();
+        console.log(myClassData);
+  
+        let tempPosts = myClassData.posts || []; // Ensure tempPosts is initialized
+  
+        tempPosts.push({
+          authorId: user.uid,
+          content: announcementContent,
+          date: moment().format("MMM Do YY"),
+          image: user.photoURL,
+          name: user.displayName,
+        });
+  
+        await setDoc(myClassRef, { posts: tempPosts }, { merge: true });
+  
+        console.log("Posts updated successfully!");
+      } else {
+        console.log("Class document not found!");
+      }
     } catch (error) {
       console.error(error);
       alert(`There was an error posting the announcement, please try again!`);
     }
   };
+  
 
   useEffect(() => {
     onSnapshot(doc(db,"classes",id),
@@ -74,14 +84,14 @@ function Class() {
         <div className="class__name">{classData?.name}</div>
       </div>
       <div className="class__announce">
-        <img src={user?.photoURL} alt="My image" />
+        <img src={user?.photoURL} alt=" " />
         <input
           type="text"
           value={announcementContent}
           onChange={(e) => setAnnouncementContent(e.target.value)}
-          placeholder="Announce something to your class"
+          placeholder="Announce something to the class"
         />
-        <IconButton onClick={createPost}>
+        <IconButton onClick={createPost} tilte="Announce">
           <SendOutlined />
         </IconButton>
       </div>

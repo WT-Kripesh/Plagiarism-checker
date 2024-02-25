@@ -31,9 +31,7 @@
     border-radius: 7px;
     color: white;
     background-color: #4285f4;
-  }
-  .login__btn:hover{
-    cursor:pointer;
+    cursor: pointer;
   }
   .login__google {
     background-color: #c91111;

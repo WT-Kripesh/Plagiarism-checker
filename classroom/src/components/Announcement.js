@@ -23,6 +23,14 @@ function Announcement({ image, name, date, content, authorId }) {
         </div>
       </div>
       <div className="announcement__content">{content}</div>
+      <div ClassName="buttonContainer">
+      <button className="assignment__upload " >
+          Add your work
+        </button> 
+        <button className="assignment__upload assignment__handin">
+          Turn-in
+        </button>
+        </div>
     </div>
   );
 }
