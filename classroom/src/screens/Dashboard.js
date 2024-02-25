@@ -5,7 +5,7 @@ import { auth, db } from "../components/firebase";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import ClassCard from "../components/Classcard";
-import {collection,where,onSnapshot} from "firebase/firestore"
+import {collection,where,getDocs,query} from "firebase/firestore"
 
 function Dashboard() {
   const [user, loading] = useAuthState(auth);
@@ -14,16 +14,29 @@ function Dashboard() {
 
   const fetchClasses = async () => {
     try {
-      onSnapshot(collection(db,"users")
-        ,where("uid", "==", user.uid)
-        ,(snapshot) => {
-          setClasses(snapshot?.docs[0]?.data()?.enrolledClassrooms);
-        });
-        console.log("Classes fetched");
+      const querySnapshot = await getDocs(query(collection(db, "users"), where("uid", "==", user.uid)));
+      const userData = querySnapshot.docs[0]?.data();
+      if (userData) {
+        const enrolledClassrooms = userData.enrolledClassrooms;
+        if (enrolledClassrooms) {
+          console.log("Classes fetched", enrolledClassrooms);
+          setClasses(enrolledClassrooms);
+        } else {
+          console.log("No classes found for the user");
+          setClasses([]);
+        }
+      } else {
+        console.log("User data not found");
+        setClasses([]);
+      }
     } catch (error) {
-      console.error(error.message);
+      console.error("Error fetching classes:", error);
+      setClasses([]);
     }
   };
+  
+  
+  
   useEffect(() => {
     if (loading) return;
     if (!user) navigate("/");
@@ -40,8 +53,18 @@ function Dashboard() {
         </div>
       ) : (
         <div className="dashboard__classContainer">
+          {/* {classes.map((individualClass) => (
+            <ClassCard
+              creatorName={individualClass.creatorName}
+              creatorPhoto={individualClass.creatorPhoto}
+              name={individualClass.name}
+              id={individualClass.id}
+              style={{ marginRight: 30, marginBottom: 30 }}
+            />
+          ))} */}
           {classes.map((individualClass) => (
             <ClassCard
+              key={individualClass.id} // Add a unique key prop based on individualClass.id
               creatorName={individualClass.creatorName}
               creatorPhoto={individualClass.creatorPhoto}
               name={individualClass.name}
