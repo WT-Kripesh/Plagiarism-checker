@@ -7,9 +7,9 @@ import { useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useNavigate, useParams } from "react-router-dom";
 import Announcement from "../components/Announcement";
-import { auth, db } from "../components/firebase";
+import { auth, db, listFilesAndDirectories } from "../components/firebase";
 import "./styles/Class.css";
-import { getDoc ,setDoc,doc,onSnapshot} from "firebase/firestore";
+import { getDoc, setDoc, doc, onSnapshot } from "firebase/firestore";
 
 function Class() {
   const [classData, setClassData] = useState({});
@@ -34,13 +34,13 @@ function Class() {
     try {
       const myClassRef = doc(db, "classes", id);
       const myClassSnap = await getDoc(myClassRef);
-  
+
       if (myClassSnap.exists()) {
         const myClassData = myClassSnap.data();
         console.log(myClassData);
-  
+
         let tempPosts = myClassData.posts || []; // Ensure tempPosts is initialized
-  
+
         tempPosts.push({
           authorId: user.uid,
           content: announcementContent,
@@ -48,9 +48,9 @@ function Class() {
           image: user.photoURL,
           name: user.displayName,
         });
-  
+
         await setDoc(myClassRef, { posts: tempPosts }, { merge: true });
-  
+
         console.log("Posts updated successfully!");
       } else {
         console.log("Class document not found!");
@@ -60,14 +60,16 @@ function Class() {
       alert(`There was an error posting the announcement, please try again!`);
     }
   };
-  
 
+  const listallfiles = async () => {
+    console.log(await listFilesAndDirectories("files"));
+  }
   useEffect(() => {
-    onSnapshot(doc(db,"classes",id),
+    onSnapshot(doc(db, "classes", id),
       ((snapshot) => {
         const data = snapshot.data();
         if (!data) navigate("/");
-        console.log(data);
+        //console.log(data);
         setClassData(data);
       }
       ));
@@ -82,6 +84,7 @@ function Class() {
     <div className="class">
       <div className="class__nameBox">
         <div className="class__name">{classData?.name}</div>
+        <button className="list__button" onClick={listallfiles}>List all files</button>
       </div>
       <div className="class__announce">
         <img src={user?.photoURL} alt=" " />

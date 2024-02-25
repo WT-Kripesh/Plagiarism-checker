@@ -15,6 +15,10 @@ import {
   where,
   addDoc,
 } from "firebase/firestore";
+import { getStorage, ref,listAll, uploadBytes } from "firebase/storage";
+
+
+
 const firebaseConfig = {
   apiKey: "AIzaSyBYoANYkWlSA5W3zoK0Rqq93EgZpzm_0cg",
   authDomain: "classroom-minor.firebaseapp.com",
@@ -27,7 +31,19 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
+const storage = getStorage(app);
 const googleProvider = new GoogleAuthProvider();
+
+const listFilesAndDirectories = async (directory) => {
+  try {
+    const listRef = ref(storage, directory);
+    const result = await listAll(listRef);
+    return result;
+  } catch (error) {
+    console.error("Error listing files and directories:", error);
+    throw error;
+  }
+};
 
 const signInWithGoogle = async () => {
   try {
@@ -75,6 +91,15 @@ const registerWithEmailAndPassword = async (name, email, password) => {
 const logout = () => {
   signOut(auth);
 };
+const uploadFileToStorage = async (file, userId) => {
+  try {
+    const storageRef = ref(storage, `files/${userId}/${file.name}`);
+    await uploadBytes(storageRef, file);
+    console.log("File uploaded successfully!");
+  } catch (error) {
+    console.error("Error uploading file:", error);
+  }
+};
 export {
   app,auth,
   db,
@@ -82,4 +107,6 @@ export {
   logInWithEmailAndPassword,
   registerWithEmailAndPassword,
   logout,
+  uploadFileToStorage,
+  listFilesAndDirectories,
 };

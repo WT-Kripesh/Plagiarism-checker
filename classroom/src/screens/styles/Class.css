@@ -45,4 +45,15 @@
     font-size: 17px;
     outline: none;
   }
+  .list__button {
+    margin-top: 6px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    padding: 6px;
+    border: none;
+      border-radius: 10px;
+      color: white;
+      background-color: #4285f4;
+  }
   
