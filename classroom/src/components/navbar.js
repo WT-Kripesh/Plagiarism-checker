@@ -8,6 +8,7 @@ import { createDialogAtom, joinDialogAtom } from "./atom";
 import CreateClass from "./createclass";
 import JoinClass from "./joinclass";
 import "./styles/navbar.css";
+
 function Navbar() {
   const [user, loading, error] = useAuthState(auth);
   const [anchorEl, setAnchorEl] = useState(null);

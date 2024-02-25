@@ -12,6 +12,8 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { useRecoilState } from "recoil";
 import { auth, db } from "./firebase";
 import { joinDialogAtom } from "./atom";
+import {query,collection,getDoc,doc,} from 'firebase/firestore';
+
 function JoinClass() {
 const [open, setOpen] = useRecoilState(joinDialogAtom);
 const [user, loading, error] = useAuthState(auth);
@@ -21,35 +23,79 @@ const handleClose = () => {
 };
 const joinClass = async () => {
     try {
-    // check if class exists
-    const classRef = await db.collection("classes").doc(classId).get();
-    if (!classRef.exists) {
-        return alert(`Class doesn't exist, please provide correct ID`);
-    }
-    const classData = await classRef.data();
-    // add class to user
-    const userRef = await db.collection("users").where("uid", "==", user.uid);
-    const userData = await (await userRef.get()).docs[0].data();
-    let tempClassrooms = userData.enrolledClassrooms;
-    tempClassrooms.push({
-        creatorName: classData.creatorName,
-        creatorPhoto: classData.creatorPhoto,
-        id: classId,
-        name: classData.name,
-    });
-    await (
-        await userRef.get()
-    ).docs[0].ref.update({
-        enrolledClassrooms: tempClassrooms,
-    });
-    // alert done
-    alert(`Enrolled in ${classData.name} successfully!`);
-    handleClose();
+        // Check if class exists
+        const classRef = doc(db, "classes", classId);
+        const classSnapshot = await getDoc(classRef);
+        
+        // if (!classSnapshot.exists()) {
+        //     throw new Error(`Class doesn't exist, please provide correct ID`);
+        // }
+        
+        const classData = classSnapshot.data();
+        
+        // Add class to user
+        const userRef = doc(collection(db, "users"), user.uid);
+        const userSnapshot = await getDoc(userRef);
+        
+        // if (!userSnapshot.exists()) {
+        //     throw new Error("User document not found");
+        // }
+        
+        const userData = userSnapshot.data() || {}; // Ensure userData is not undefined
+        const tempClassrooms = userData.enrolledClassrooms || [];
+        
+        tempClassrooms.push({
+            creatorName: classData.creatorName,
+            id: classId,
+            name: classData.name,
+        });
+        
+        await userRef.update({
+            enrolledClassrooms: tempClassrooms,
+        });
+        
+        // Alert success message
+        alert(`Enrolled in ${classData.name} successfully!`);
+        
+        handleClose();
     } catch (err) {
-    console.error(err);
-    alert(err.message);
+        console.error(err);
+        alert(err.message);
     }
 };
+
+// const joinClass = async () => {
+//     try {
+//     // check if class exists
+//     const classRef = doc(db, "classes", classId);
+//     // if (!classRef.exists) {
+//     //     return alert(`Class doesn't exist, please provide correct ID`);
+//     // }
+//     const classData = (await getDocs(classRef)).data();
+//     // add class to user
+//     const userRef = query(collection(db, "users"), where("uid", "==", user.uid));
+//     const userData = (await getDocs(userRef)).docs[0].data();
+//     let tempClassrooms = userData.enrolledClassrooms|| [];
+//     tempClassrooms.push({
+//         creatorName: classData.creatorName,
+//         id: classId,
+//         name: classData.name,
+//     });
+//     console.log("debuging");
+//     await (
+//         await userRef.get()
+//     ).docs[0].ref.update({
+//         enrolledClassrooms: tempClassrooms,
+//     });
+    
+    // alert done
+//     alert(`Enrolled in ${classData.name} successfully!`);
+//     handleClose();
+//     } catch (err) {
+//     console.log(err);
+//     alert(err.message);
+//     }
+// };
 return (
     <div className="joinClass">
     <Dialog
