@@ -15,7 +15,7 @@ import {
   where,
   addDoc,
 } from "firebase/firestore";
-import { getStorage, ref,listAll, uploadBytes } from "firebase/storage";
+import { getStorage, ref,listAll, uploadBytesResumable } from "firebase/storage";
 
 
 
@@ -91,14 +91,20 @@ const registerWithEmailAndPassword = async (name, email, password) => {
 const logout = () => {
   signOut(auth);
 };
-const uploadFileToStorage = async (file, userId) => {
-  try {
-    const storageRef = ref(storage, `files/${userId}/${file.name}`);
-    await uploadBytes(storageRef, file);
-    console.log("File uploaded successfully!");
-  } catch (error) {
-    console.error("Error uploading file:", error);
-  }
+// const uploadFileToStorage = async (file, userId) => {
+//   try {
+//     const storageRef = ref(storage, `files/${userId}/${file.name}`);
+//     await uploadBytes(storageRef, file);
+//     console.log("File uploaded successfully!");
+//   } catch (error) {
+//     console.error("Error uploading file:", error);
+//   }
+// };
+const uploadFileToStorage = (file, authorId) => {
+  const storageRef = ref(storage, `files/${authorId}/${file.name}`);
+  const uploadTask = uploadBytesResumable(storageRef, file);
+
+  return uploadTask;
 };
 export {
   app,auth,
