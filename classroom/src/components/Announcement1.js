@@ -4,7 +4,7 @@ import { MoreVert } from "@material-ui/icons";
 import { uploadFileToStorage } from "./firebase"; 
 import "./styles/Announcement.css";
 
-function Announcement({ image, name, date, content, authorId }) {
+function Announcement1({ image, name, date, content, authorId }) {
   const [selectedFile, setSelectedFile] = useState(null);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [uploadError, setUploadError] = useState(null);
@@ -59,15 +59,14 @@ function Announcement({ image, name, date, content, authorId }) {
       </div>
       <div className="announcement__content">{content}</div>
       <div className="buttonContainer">
-        <input type="pdf" onChange={handleFileChange} style={{ display: "none" }} />
+        <input type="file" onChange={handleFileChange} style={{ display: "none" }} />
         <button className="assignment__upload" onClick={() => document.querySelector('input[type="file"]').click()}>
-          Add your work
+          View Submissions
         </button>
-        <button className="assignment__upload assignment__handin" onClick={handleUpload}>Submit</button>
       </div>
       {uploadProgress > 0 && <div>Upload Progress: {uploadProgress}%</div>}
       {uploadError && <div>Error: {uploadError}</div>}
     </div>
   );
 }
-export default Announcement;
+export default Announcement1;

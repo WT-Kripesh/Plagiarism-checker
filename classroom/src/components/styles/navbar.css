@@ -1,3 +1,4 @@
+
 .navbar {
     width: 100vw;
     height: 80px;
@@ -6,6 +7,7 @@
     justify-content: space-between;
     padding: 0 20px;
     align-items: center;
+    background-color: rgb(205, 223, 238);
   }
   .navbar__left {
     display: flex;

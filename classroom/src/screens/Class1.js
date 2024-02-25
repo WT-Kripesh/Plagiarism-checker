@@ -6,9 +6,9 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useNavigate, useParams } from "react-router-dom";
-import Announcement from "../components/Announcement";
+import Announcement1 from "../components/Announcement1";
 import { auth, db, listFilesAndDirectories } from "../components/firebase";
-import "./styles/Class.css";
+import "./styles/Class1.css";
 import { getDoc, setDoc, doc, onSnapshot } from "firebase/firestore";
 
 function Class() {
@@ -19,13 +19,8 @@ function Class() {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  /*
-    PLAN: Create a snapshot listener and fill in the data into classData, 
-    and then map through it during render
-  */
 
   useEffect(() => {
-    // reverse the array
     let reversedArray = classData?.posts?.reverse();
     setPosts(reversedArray);
   }, [classData]);
@@ -82,28 +77,32 @@ function Class() {
 
   return (
     <div className="class">
-      <div className="class__Container">
       <div className="class__nameBox">
         <div className="class__name">{classData?.name}</div>
-        <h6>Class Id: {id}</h6>
+        <div className="classid">Class Id: {id}</div>
+        <button className="list__button" onClick={listallfiles}>View all files</button>
       </div>
-
-      {posts && posts.length > 0 ? (
-    posts.map((post) => (
-    <Announcement
-      key={post.id} 
-      authorId={post.authorId}
-      content={post.content}
-      date={post.date}
-      image={post.image}
-      name={post.name}
-      style={{ marginTop: 30 }}
-    />
-    ))
-  ) : (
-    <div className="noPost">No post yet.</div>
-  )}
-  </div>
+      <div className="class__announce">
+        <img src={user?.photoURL} alt=" " />
+        <input
+          type="text"
+          value={announcementContent}
+          onChange={(e) => setAnnouncementContent(e.target.value)}
+          placeholder="Announce something to the class."
+        />
+        <IconButton onClick={createPost} tilte="Announce">
+          <SendOutlined />
+        </IconButton>
+      </div>
+      {posts?.map((post) => (
+        <Announcement1
+          authorId={post.authorId}
+          content={post.content}
+          date={post.date}
+          image={post.image}
+          name={post.name}
+        />
+      ))}
     </div>
   );
 }

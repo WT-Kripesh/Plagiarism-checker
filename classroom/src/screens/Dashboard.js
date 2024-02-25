@@ -46,25 +46,16 @@ function Dashboard() {
     fetchClasses();
   }, [user, loading]);
   return (
-    <div className="dashboard">
+    <div className="dashboard__body">
       {(classes === null || classes === undefined || classes.length === 0 )? (
         <div className="dashboard__404">
           No classes found! Join or create one!
         </div>
       ) : (
         <div className="dashboard__classContainer">
-          {/* {classes.map((individualClass) => (
-            <ClassCard
-              creatorName={individualClass.creatorName}
-              creatorPhoto={individualClass.creatorPhoto}
-              name={individualClass.name}
-              id={individualClass.id}
-              style={{ marginRight: 30, marginBottom: 30 }}
-            />
-          ))} */}
           {classes.map((individualClass) => (
             <ClassCard
-              key={individualClass.id} // Add a unique key prop based on individualClass.id
+              key={individualClass.id} 
               creatorName={individualClass.creatorName}
               creatorPhoto={individualClass.creatorPhoto}
               name={individualClass.name}

@@ -12,57 +12,87 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { useRecoilState } from "recoil";
 import { auth, db } from "./firebase";
 import { joinDialogAtom } from "./atom";
-import {query,collection,getDoc,doc,} from 'firebase/firestore';
+import {query,getDoc,collection,updateDoc,doc,} from 'firebase/firestore';
+
 
 function JoinClass() {
-const [open, setOpen] = useRecoilState(joinDialogAtom);
-const [user, loading, error] = useAuthState(auth);
-const [classId, setClassId] = useState("");
-const handleClose = () => {
-    setOpen(false);
-};
-const joinClass = async () => {
-    try {
-        // Check if class exists
-        const classRef = doc(db, "classes", classId);
-        const classSnapshot = await getDoc(classRef);
-        
-        // if (!classSnapshot.exists()) {
-        //     throw new Error(`Class doesn't exist, please provide correct ID`);
-        // }
-        
-        const classData = classSnapshot.data();
-        
-        // Add class to user
-        const userRef = doc(collection(db, "users"), user.uid);
-        const userSnapshot = await getDoc(userRef);
-        
-        // if (!userSnapshot.exists()) {
-        //     throw new Error("User document not found");
-        // }
-        
-        const userData = userSnapshot.data() || {}; // Ensure userData is not undefined
-        const tempClassrooms = userData.enrolledClassrooms || [];
-        
-        tempClassrooms.push({
-            creatorName: classData.creatorName,
-            id: classId,
-            name: classData.name,
-        });
-        
-        await userRef.update({
-            enrolledClassrooms: tempClassrooms,
-        });
-        
-        // Alert success message
-        alert(`Enrolled in ${classData.name} successfully!`);
-        
-        handleClose();
-    } catch (err) {
-        console.error(err);
-        alert(err.message);
-    }
-};
+    const [open, setOpen] = useRecoilState(joinDialogAtom);
+    const [user, loading, error] = useAuthState(auth);
+    const [classId, setClassId] = useState("");
+
+    const handleClose = () => {
+        setOpen(false);
+    };
+
+    const joinClass = async () => {
+        try {
+
+            const classRef = doc(db, "classes", classId);
+            const classSnapshot = await getDoc(classRef);
+            const classData = classSnapshot.data();
+            {console.log("1hello",classData)}
+            // Add class to user
+            const userRef = doc(db, "users", user.uid);
+            const userSnapshot = await getDoc(userRef);
+            const userData = userSnapshot.data() || {};
+            const tempClassrooms = userData.enrolledClassrooms || [];
+            {console.log("2",tempClassrooms)}
+            
+            tempClassrooms.push({
+                creatorName: classData.creatorName,
+                id: classId,
+                name: classData.name,
+            });
+            {console.log("3",tempClassrooms)}
+
+            await updateDoc(userRef, { enrolledClassrooms: tempClassrooms });
+    
+            alert(`Enrolled in ${classData.name} successfully!`);
+            handleClose();
+        } catch (err) {
+            console.error(err);
+            alert(err.message);
+        }
+    };
+    
+    return (
+        <div className="joinClass">
+            <Dialog
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="form-dialog-title"
+            >
+                <DialogTitle id="form-dialog-title">Join class</DialogTitle>
+                <DialogContent>
+                    <DialogContentText>
+                        Enter ID of the class to join the classroom
+                    </DialogContentText>
+                    <TextField
+                        autoFocus
+                        margin="dense"
+                        label="Class Name"
+                        type="text"
+                        fullWidth
+                        value={classId}
+                        onChange={(e) => setClassId(e.target.value)}
+                    />
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleClose} color="primary">
+                        Cancel
+                    </Button>
+                    <Button onClick={joinClass} color="primary">
+                        Join
+                    </Button>
+                </DialogActions>
+            </Dialog>
+        </div>
+    );
+}
+
+export default JoinClass;
+
+
 
 // const joinClass = async () => {
 //     try {
@@ -96,38 +126,3 @@ const joinClass = async () => {
 //     alert(err.message);
 //     }
 // };
-return (
-    <div className="joinClass">
-    <Dialog
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="form-dialog-title"
-    >
-        <DialogTitle id="form-dialog-title">Join class</DialogTitle>
-        <DialogContent>
-        <DialogContentText>
-            Enter ID of the class to join the classroom
-        </DialogContentText>
-        <TextField
-            autoFocus
-            margin="dense"
-            label="Class Name"
-            type="text"
-            fullWidth
-            value={classId}
-            onChange={(e) => setClassId(e.target.value)}
-        />
-        </DialogContent>
-        <DialogActions>
-        <Button onClick={handleClose} color="primary">
-            Cancel
-        </Button>
-        <Button onClick={joinClass} color="primary">
-            Join
-        </Button>
-        </DialogActions>
-    </Dialog>
-    </div>
-);
-}
-export default JoinClass;

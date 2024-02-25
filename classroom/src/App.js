@@ -4,6 +4,7 @@ import Dashboard from "./screens/Dashboard";
 import Register from "./screens/register"
 import Navbar from './components/navbar';
 import Class from './screens/Class';
+import Class1 from './screens/Class1'
 import { BrowserRouter as 
   Router, Route, Routes} from "react-router-dom";
 
@@ -23,6 +24,12 @@ function App() {
         <>
         <Navbar />
         <Class />
+        </>
+      } />
+      <Route exact path="/teacher/:id" element={
+        <>
+        <Navbar />
+        <Class1 />
         </>
       } />
       </Routes>
