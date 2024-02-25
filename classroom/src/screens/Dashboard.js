@@ -8,17 +8,18 @@ import ClassCard from "../components/Classcard";
 import {collection,where,onSnapshot} from "firebase/firestore"
 
 function Dashboard() {
-  const [user, loading, error] = useAuthState(auth);
+  const [user, loading] = useAuthState(auth);
   const [classes, setClasses] = useState([]);
   const navigate = useNavigate();
+
   const fetchClasses = async () => {
     try {
-      await 
       onSnapshot(collection(db,"users")
         ,where("uid", "==", user.uid)
         ,(snapshot) => {
           setClasses(snapshot?.docs[0]?.data()?.enrolledClassrooms);
         });
+        console.log("Classes fetched");
     } catch (error) {
       console.error(error.message);
     }
@@ -33,7 +34,7 @@ function Dashboard() {
   }, [user, loading]);
   return (
     <div className="dashboard">
-      {classes == null || classes == undefined || classes.length === 0 ? (
+      {(classes === null || classes === undefined || classes.length === 0 )? (
         <div className="dashboard__404">
           No classes found! Join or create one!
         </div>

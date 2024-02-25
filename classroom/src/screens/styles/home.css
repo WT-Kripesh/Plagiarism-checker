@@ -1,0 +1,120 @@
+.settingsLogo {
+  width: 138px;
+  height: 138px;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+  display: none;
+}
+.nicepngCautionSignPng97105Icon {
+  height: 185px;
+  width: 188px;
+  position: relative;
+  object-fit: cover;
+}
+.cheatingPlagiarism {
+  margin-block-start: 0;
+  margin-block-end: 10px;
+}
+.yourLearningCapabilities {
+  margin: 0;
+}
+.cheatingPlagiarismContainer {
+  align-self: stretch;
+  height: 116px;
+  position: relative;
+  letter-spacing: 0.05em;
+  line-height: 24px;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  text-shadow: 1px 0 0#000, 0 1px 0#000, -1px 0 0#000, 0-1px 0#000;
+}
+.cheatingPlagiarismLabel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 3px 0 0;
+  box-sizing: border-box;
+  min-width: 332px;
+  max-width: 100%;
+}
+.cautionSignFrame,
+.cheatingPlagiarismText {
+  display: flex;
+  flex-direction: row;
+  max-width: 100%;
+}
+.cheatingPlagiarismText {
+  width: 734px;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0 35px;
+}
+.cautionSignFrame {
+  width: 860px;
+  align-items: flex-start;
+  justify-content: flex-end;
+}
+.desktop1,
+.mainMenuFrame {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+.mainMenuFrame {
+  align-self: stretch;
+  background-color: var(--color-gray-100);
+  align-items: center;
+  padding: var(--padding-30xl) var(--padding-16xl) var(--padding-16xl);
+  box-sizing: border-box;
+  gap: 43px 0;
+  max-width: 100%;
+  z-index: 2;
+  text-align: center;
+  font-size: 31px;
+  color: var(--color-white);
+  font-family: var(--font-roboto);
+}
+.desktop1 {
+  width: 100%;
+  position: relative;
+  background-color: var(--color-white);
+  align-items: flex-start;
+  letter-spacing: normal;
+}
+@media screen and (max-width: 1050px) {
+  .cheatingPlagiarismContainer {
+    font-size: var(--font-size-6xl);
+    line-height: 19px;
+  }
+  .mainMenuFrame {
+    padding-top: var(--padding-13xl);
+    padding-bottom: var(--padding-4xl);
+    box-sizing: border-box;
+  }
+}
+@media screen and (max-width: 750px) {
+  .nicepngCautionSignPng97105Icon {
+    flex: 1;
+  }
+  .cheatingPlagiarismText {
+    flex-wrap: wrap;
+    gap: 0 35px;
+  }
+  .mainMenuFrame {
+    gap: 43px 0;
+    padding-top: var(--padding-2xl);
+    padding-bottom: var(--padding-xl);
+    box-sizing: border-box;
+  }
+}
+@media screen and (max-width: 450px) {
+  .cheatingPlagiarismContainer {
+    font-size: var(--font-size-lgi);
+    line-height: 14px;
+  }
+}
