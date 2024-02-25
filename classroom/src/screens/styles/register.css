@@ -4,6 +4,10 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    /* background-color: aliceblue; */
+    background-image: url("https://images.unsplash.com/photo-1510070112810-d4e9a46d9e91?q=80&w=869&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
+    background-size: cover;
+    background-position: center;
   }
   .register__container {
     display: flex;
@@ -11,6 +15,7 @@
     text-align: center;
     background-color: #dcdcdc;
     padding: 30px;
+    border-radius: 8px;
   }
   .register__textBox {
     padding: 10px;
@@ -39,7 +44,9 @@
   }
   .image{
     margin-top: 8px;
-    padding-bottom: 20px;
-    margin-bottom: 8px;
-    
+    display: flex;
+    align-self: center;
+    height:150px;
+    width:200px;
+    margin-bottom: 10px;
   }

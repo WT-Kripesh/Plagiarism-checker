@@ -1,7 +1,7 @@
 .navbar {
     width: 100vw;
-    height: 65px;
-    border-bottom: 1px solid #dcdcdc;
+    height: 80px;
+    border-bottom: 2px solid #dcdcdc;
     display: flex;
     justify-content: space-between;
     padding: 0 20px;
@@ -13,7 +13,7 @@
   }
   .navbar__left img {
     margin-right: 20px;
-    margin-left: 20px;
+    margin-left: 10px;
   }
   .navbar__left span {
     font-size: 20px;
@@ -21,8 +21,9 @@
   .navbar__right {
     display: flex;
     align-items: center;
+    margin-right: 30px;
   }
   .navbar__logo {
-    height: 30px;
+    height: 40px;
     width: auto;
   }

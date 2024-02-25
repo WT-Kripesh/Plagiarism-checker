@@ -9,6 +9,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import Announcement from "../components/Announcement";
 import { auth, db } from "../components/firebase";
 import "./styles/Class.css";
+import { getDoc ,doc,onSnapshot} from "firebase/firestore";
 
 function Class() {
   const [classData, setClassData] = useState({});
@@ -31,7 +32,7 @@ function Class() {
 
   const createPost = async () => {
     try {
-      const myClassRef = await db.collection("classes").doc(id).get();
+      const myClassRef = await getDoc(doc(db,"classes",id));
       const myClassData = await myClassRef.data();
       console.log(myClassData);
       let tempPosts = myClassData.posts;
@@ -52,14 +53,14 @@ function Class() {
   };
 
   useEffect(() => {
-    db.collection("classes")
-      .doc(id)
-      .onSnapshot((snapshot) => {
+    onSnapshot(doc(db,"classes",id),
+      ((snapshot) => {
         const data = snapshot.data();
         if (!data) navigate("/");
         console.log(data);
         setClassData(data);
-      });
+      }
+      ));
   }, []);
 
   useEffect(() => {

@@ -7,7 +7,7 @@ import {
   signInWithGoogle,
 } from "../components/firebase";
 import "./styles/register.css";
-import classroomlogo from '../components/logo.png';
+// import classroomlogo from '../components/logo.png';
 
 function Register() {
   const [email, setEmail] = useState("");
@@ -26,8 +26,9 @@ function Register() {
   return (
     <div className="register">
       <div className="register__container">
-        <img src={classroomlogo}
-          alt="Google Classroom Image"
+        <img 
+            src ="https://1000logos.net/wp-content/uploads/2020/10/Duolingo-Logo-2013.png"
+            alt="Classroom Image"
           className="image"
         />
         <input

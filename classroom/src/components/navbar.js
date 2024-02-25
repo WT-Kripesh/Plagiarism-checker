@@ -26,11 +26,12 @@ function Navbar() {
       <JoinClass />
       <nav className="navbar">
         <div className="navbar__left">
-          <IconButton>
+          <IconButton title="Menu">
             <MenuIcon />
           </IconButton>
           <img
-            src="https://1000logos.net/wp-content/uploads/2021/05/Google-logo.png"
+            // src="https://1000logos.net/wp-content/uploads/2021/05/Google-logo.png"
+            src ="https://1000logos.net/wp-content/uploads/2020/10/Duolingo-logo.png"
             alt="Google Logo"
             className="navbar__logo"
           />{" "}
@@ -44,12 +45,12 @@ function Navbar() {
           >
             <Add />
           </IconButton>
-          <IconButton>
+          <IconButton title="All apps">
             <Apps />
           </IconButton>
-          <IconButton onClick={logout}>
+          <IconButton onClick={logout} title="Logout">
             <Avatar src={user?.photoURL} />
-          </IconButton>
+          </IconButton >
           <Menu
             id="simple-menu"
             anchorEl={anchorEl}

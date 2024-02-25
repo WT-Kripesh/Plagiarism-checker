@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { auth, logInWithEmailAndPassword, signInWithGoogle } from "../components/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import "./styles/login.css";
-import classroomlogo from '../components/logo.png';
+// import classroomlogo from '../components/logo.png';
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -21,8 +21,8 @@ function Login() {
     <div className="login">
       <div className="login__container">
       <img
-          src={classroomlogo}
-          alt="Google Classroom Image"
+            src ="https://1000logos.net/wp-content/uploads/2020/10/Duolingo-Logo-2013.png"
+            alt="Classroom Image"
           className="image"
         />  
         <input
