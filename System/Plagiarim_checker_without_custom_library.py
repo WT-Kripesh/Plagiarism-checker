@@ -4,6 +4,7 @@ import re
 import math
 import os
 from itertools import combinations
+import fitz  # PyMuPDF
 
 # for extracting texts from pdf. just pass pdf_path as argument and  this will return a large raw texts jasma dherai whitespaces and comma, aru nachaido symbol haru ni hunchan.
 def extract_text_from_pdf(pdf_path):
@@ -21,7 +22,7 @@ def extract_text_from_pdf(pdf_path):
 separators = r'[^\w\d]+'
 def tokenize_the_text(raw_text, n):
     
-    raw_text = raw_text.lower()
+    # raw_text = raw_text.lower()
     words = re.split(separators, raw_text)
     ngrams = [' '.join(words[i:i+n]) for i in range(len(words)-n)]
     return [ngram for ngram in ngrams if ngram.strip()]  # Filter out empty strings
@@ -69,14 +70,14 @@ def calculate_cosine_similarity(file_path_1, file_path_2, n):
 
     # Calculating numerator
     numerator = 0
-    common_words_in_both_dictionaries = set( word_count_dict1.keys() ) & set( word_count_dict2.keys() )
+    common_words_in_both_pdfs = set( word_count_dict1.keys() ) & set( word_count_dict2.keys() )
 
-    for word in common_words_in_both_dictionaries:
+    for word in common_words_in_both_pdfs:
         numerator += word_count_dict1[word] * word_count_dict2[word]
     
     cosTheta = numerator / denominator
-    if cosTheta>1:
-        cosTheta=1
+    if cosTheta > 1:
+        cosTheta = 1
     Theta = math.acos(cosTheta)
 
     y = ((-2/math.pi)*Theta) + 1
@@ -92,7 +93,8 @@ def calculate_cosine_similarity(file_path_1, file_path_2, n):
 # pdf_list = get_pdf_list("./")
 # print(pdf_list)
 
-threshold = 80
+# temporarily, threshold = 40 for testing purpose only.
+threshold = 40
 def get_list_of_groups_of_plagiarized(folder_name):
     pdf_list = get_pdf_list(folder_name)
     list_of_groups_of_plagiarized = []
@@ -108,7 +110,7 @@ def get_list_of_groups_of_plagiarized(folder_name):
                 similarity += calculate_cosine_similarity(pdf1, pdf2, n)
             similarity /= 3
 
-            print(f"File1: {pdf1.split('/')[-1]}, File2: {pdf2.split('/')[-1]}, Similarity Between Them: {similarity}% \n\n")
+            # print(f"File1: {pdf1.split('/')[-1]}, File2: {pdf2.split('/')[-1]}, Similarity Between Them: {similarity}% \n\n")
             
             if similarity >= threshold:
                 group = {pdf1, pdf2}
@@ -131,5 +133,40 @@ def get_list_of_groups_of_plagiarized(folder_name):
         list_of_groups.append(_group)
     return list_of_groups
 
+get_list_of_groups_of_plagiarized = get_list_of_groups_of_plagiarized("files")
+print(get_list_of_groups_of_plagiarized)
 
-print(get_list_of_groups_of_plagiarized("files"))
+#Gets index from user
+index_of_list = int (input("Enter the index from the list of which you wanna see/generate plagiarized part."))
+get_the_list_of_selected_list = get_list_of_groups_of_plagiarized[index_of_list]
+
+def highlight_word_in_pdf(pdf_path , destination_path , words):
+    doc = fitz.open(pdf_path)
+    for page in doc:
+        for word in words:
+            for idx, found_rect in enumerate(page.search_for(word)):
+                page.add_highlight_annot(found_rect)
+    temp_path = ((pdf_path.replace('.pdf', '_highlighted.pdf')).rsplit('/',1))[1]
+    doc.save(destination_path+'/'+temp_path)
+    doc.close()
+
+def generate_highlight_text_pdf_file(source_folder, destination_folder, file_list):
+    destination_folder = source_folder + '/' + destination_folder
+    if not os.path.exists(destination_folder):
+        os.makedirs(destination_folder)
+    
+    pdf_list_path = ["./"+source_folder+"/"+file_path for file_path in file_list]
+    texts = [tokenize_the_text(extract_text_from_pdf(file_path), 5) for file_path in pdf_list_path]
+    common_words = set(texts[0]).intersection(*texts[1:])
+    # print(common_words)
+    for file_path in pdf_list_path:
+        for word in common_words:
+            highlight_word_in_pdf(file_path, destination_folder, common_words)
+
+
+generate_highlight_text_pdf_file("files" , "highlighted_pdfs", get_the_list_of_selected_list)
+
+
+
+
+
