@@ -5,27 +5,27 @@ import math
 import os
 from itertools import combinations
 import fitz  # PyMuPDF
+import string
 
-# for extracting texts from pdf. just pass pdf_path as argument and  this will return a large raw texts jasma dherai whitespaces and comma, aru nachaido symbol haru ni hunchan.
 def extract_text_from_pdf(pdf_path):
     try:
         pdf_reader = PdfReader(pdf_path)
         text = ''
         for page_num in range(len(pdf_reader.pages)):
             text += pdf_reader.pages[page_num].extract_text()
-        return text
+        return re.sub(r'\s+-', '-', text)
     except Exception as e:
         print(f"Error extracting text: {e}")
         return None
 
 
-separators = r'[^\w\d]+'
-def tokenize_the_text(raw_text, n):
-    
-    # raw_text = raw_text.lower()
-    words = re.split(separators, raw_text)
-    ngrams = [' '.join(words[i:i+n]) for i in range(len(words)-n)]
+def tokenize_the_text(text, n):
+    text = text.lower()
+    words = text.split()
+    ngrams = [' '.join(words[i:i+n]) for i in range(len(words)-n + 1)]
     return [ngram for ngram in ngrams if ngram.strip()]  # Filter out empty strings
+
+
 
 def get_pdf_list(folder_name):
     pdf_files_list = []
@@ -83,17 +83,7 @@ def calculate_cosine_similarity(file_path_1, file_path_2, n):
     y = ((-2/math.pi)*Theta) + 1
     return y * 100
 
-# file_path_1 = "tala_mathi.pdf"
-# file_path_2 = "mathi_tala.pdf"
-# y = calculate_cosine_similarity(file_path_1,file_path_2)
 
-
-# print(f"The two documents is {y*100}% Plagiarized.")
-
-# pdf_list = get_pdf_list("./")
-# print(pdf_list)
-
-# temporarily, threshold = 40 for testing purpose only.
 threshold = 40
 def get_list_of_groups_of_plagiarized(folder_name):
     pdf_list = get_pdf_list(folder_name)
@@ -134,9 +124,9 @@ def get_list_of_groups_of_plagiarized(folder_name):
     return list_of_groups
 
 get_list_of_groups_of_plagiarized = get_list_of_groups_of_plagiarized("files")
+
 print(get_list_of_groups_of_plagiarized)
 
-#Gets index from user
 index_of_list = int (input("Enter the index from the list of which you wanna see/generate plagiarized part."))
 get_the_list_of_selected_list = get_list_of_groups_of_plagiarized[index_of_list]
 
