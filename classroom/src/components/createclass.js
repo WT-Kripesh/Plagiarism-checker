@@ -22,6 +22,7 @@ function CreateClass() {
   const [errmsg,seterrmsg] = useState("");
   const handleClose = () => {
     setOpen(false);
+    window.location.reload();
   };
   const createClass = async () => {
     try {
@@ -29,6 +30,7 @@ function CreateClass() {
         creatorUid: user.uid,
         name: className,
         creatorName: user.displayName,
+        creatorPhoto: user.photoURL,
         posts: [],
       });
 
@@ -44,12 +46,13 @@ function CreateClass() {
           id: newClass.id,
           name: className,
           creatorName: user.displayName,
+          creatorPhoto: user.photoURL,
         });
         await updateDoc(doc(db, "users", docId), {
           enrolledClassrooms: userClasses,
         });
       } else {
-        console.error("User document not found");
+        console.error("User not found");
       }      
       console.log("Classroom created successfully!");
       handleClose();

@@ -89,9 +89,9 @@ function Class() {
       </div>
 
       {posts && posts.length > 0 ? (
-    posts.map((post) => (
+    posts.map((post,index) => (
     <Announcement
-      key={post.id} 
+      key={index} 
       authorId={post.authorId}
       content={post.content}
       date={post.date}

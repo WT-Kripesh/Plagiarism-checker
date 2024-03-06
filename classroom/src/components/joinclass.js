@@ -8,52 +8,74 @@ DialogTitle,
 TextField,
 } from "@material-ui/core";
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useRecoilState } from "recoil";
 import { auth, db } from "./firebase";
 import { joinDialogAtom } from "./atom";
-import {query,getDoc,collection,updateDoc,doc,} from 'firebase/firestore';
+import {query,getDoc,getDocs,where,collection,updateDoc,doc,} from 'firebase/firestore';
 
 
 function JoinClass() {
     const [open, setOpen] = useRecoilState(joinDialogAtom);
     const [user, loading, error] = useAuthState(auth);
     const [classId, setClassId] = useState("");
+    const navigate=useNavigate();
 
     const handleClose = () => {
         setOpen(false);
+        // window.location.reload();
+        navigate("/");
     };
 
     const joinClass = async () => {
         try {
-
-            const classRef = doc(db, "classes", classId);
+            const classRef = doc(db, "classes", classId);   
             const classSnapshot = await getDoc(classRef);
-            const classData = classSnapshot.data();
-            {console.log("1hello",classData)}
-            // Add class to user
-            const userRef = doc(db, "users", user.uid);
-            const userSnapshot = await getDoc(userRef);
-            const userData = userSnapshot.data() || {};
-            const tempClassrooms = userData.enrolledClassrooms || [];
-            {console.log("2",tempClassrooms)}
             
+            if (!classSnapshot.exists()) {
+                return alert(`Class doesn't exist, please provide correct ID`);
+            }
+    
+            const classData = classSnapshot.data(); 
+            {console.log("class data fetched",classData)}
+            // Get user document reference
+
+            const userRef = await getDocs(
+            query(collection(db, "users"), where("uid", "==", user.uid))
+            );
+            if (userRef.empty) {
+                throw new Error("User not found");
+            }
+
+            const docId = userRef.docs[0].id;
+            const userData = userRef.docs[0].data();
+            {console.log("user data fetched",userData.enrolledClassrooms)}
+            let tempClassrooms = userData.enrolledClassrooms || [];
+            
+            const alreadyEnrolled = tempClassrooms.some(classroom => classroom.id === classId);
+            if (alreadyEnrolled) {
+                return alert(`You are already enrolled in ${classData.name}`);
+            }
             tempClassrooms.push({
                 creatorName: classData.creatorName,
                 id: classId,
                 name: classData.name,
             });
-            {console.log("3",tempClassrooms)}
-
-            await updateDoc(userRef, { enrolledClassrooms: tempClassrooms });
+            // {console.log("user data after pushing new class",userData.enrolledClassrooms)}
     
+            // await updateDoc(userRef, { enrolledClassrooms: tempClassrooms });
+            await updateDoc(doc(db, "users", docId), {
+                enrolledClassrooms: tempClassrooms,
+              });
             alert(`Enrolled in ${classData.name} successfully!`);
             handleClose();
         } catch (err) {
             console.error(err);
             alert(err.message);
+            handleClose();
         }
-    };
+    };    
     
     return (
         <div className="joinClass">
@@ -94,35 +116,3 @@ export default JoinClass;
 
 
 
-// const joinClass = async () => {
-//     try {
-//     // check if class exists
-//     const classRef = doc(db, "classes", classId);
-//     // if (!classRef.exists) {
-//     //     return alert(`Class doesn't exist, please provide correct ID`);
-//     // }
-//     const classData = (await getDocs(classRef)).data();
-//     // add class to user
-//     const userRef = query(collection(db, "users"), where("uid", "==", user.uid));
-//     const userData = (await getDocs(userRef)).docs[0].data();
-//     let tempClassrooms = userData.enrolledClassrooms|| [];
-//     tempClassrooms.push({
-//         creatorName: classData.creatorName,
-//         id: classId,
-//         name: classData.name,
-//     });
-//     console.log("debuging");
-//     await (
-//         await userRef.get()
-//     ).docs[0].ref.update({
-//         enrolledClassrooms: tempClassrooms,
-//     });
-    
-    // alert done
-//     alert(`Enrolled in ${classData.name} successfully!`);
-//     handleClose();
-//     } catch (err) {
-//     console.log(err);
-//     alert(err.message);
-//     }
-// };

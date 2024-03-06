@@ -19,7 +19,7 @@ function Dashboard() {
       if (userData) {
         const enrolledClassrooms = userData.enrolledClassrooms;
         if (enrolledClassrooms) {
-          console.log("Classes fetched", enrolledClassrooms);
+          //console.log("Classes fetched", enrolledClassrooms);
           setClasses(enrolledClassrooms);
         } else {
           console.log("No classes found for the user");
@@ -53,9 +53,9 @@ function Dashboard() {
         </div>
       ) : (
         <div className="dashboard__classContainer">
-          {classes.map((individualClass) => (
+          {classes.map((individualClass,index) => (
             <ClassCard
-              key={individualClass.id} 
+              key={index} 
               creatorName={individualClass.creatorName}
               creatorPhoto={individualClass.creatorPhoto}
               name={individualClass.name}
