@@ -15,9 +15,7 @@ import {
   where,
   addDoc,
 } from "firebase/firestore";
-import { getStorage, ref,listAll, uploadBytes } from "firebase/storage";
-
-
+import { getStorage, ref, listAll, uploadBytes } from "firebase/storage";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBYoANYkWlSA5W3zoK0Rqq93EgZpzm_0cg",
@@ -26,7 +24,7 @@ const firebaseConfig = {
   storageBucket: "classroom-minor.appspot.com",
   messagingSenderId: "39481730582",
   appId: "1:39481730582:web:c9ec31b0107b6bac177737",
-  measurementId: "G-QFYFD4VEY6"
+  measurementId: "G-QFYFD4VEY6",
 };
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
@@ -64,12 +62,12 @@ const signInWithGoogle = async () => {
     alert(err.message);
   }
 };
-const logInWithEmailAndPassword = async (email, password) => {
+const logInWithEmailAndPassword = async (email, password, setLoginError) => {
   try {
     await signInWithEmailAndPassword(auth, email, password);
   } catch (err) {
     console.error(err);
-    alert(err.message);
+    setLoginError("Invalid email or password");
   }
 };
 const registerWithEmailAndPassword = async (name, email, password) => {
@@ -107,7 +105,8 @@ const uploadFileToStorage = async (file, userId) => {
 //   return uploadTask;
 // };
 export {
-  app,auth,
+  app,
+  auth,
   db,
   signInWithGoogle,
   logInWithEmailAndPassword,

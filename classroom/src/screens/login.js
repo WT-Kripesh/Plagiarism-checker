@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { auth, logInWithEmailAndPassword, signInWithGoogle } from "../components/firebase";
+import {
+  auth,
+  logInWithEmailAndPassword,
+  signInWithGoogle,
+} from "../components/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import "./styles/login.css";
 // import classroomlogo from '../components/logo.png';
@@ -9,6 +13,7 @@ function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [user, loading, error] = useAuthState(auth);
+  const [loginError, setLoginError] = useState(null); // Add state for login error
   const navigate = useNavigate();
   useEffect(() => {
     if (loading) {
@@ -17,14 +22,24 @@ function Login() {
     }
     if (user) navigate("/dashboard");
   }, [user, loading]);
+
+  const handleLogin = async () => {
+    try {
+      await logInWithEmailAndPassword(email, password, setLoginError);
+    } catch (err) {
+      console.error(err);
+      setLoginError("Invalid email or password");
+    }
+  };
+
   return (
     <div className="login">
       <div className="login__container">
-      <img
-            src ="https://1000logos.net/wp-content/uploads/2020/10/Duolingo-Logo-2013.png"
-            alt="Classroom Image"
+        <img
+          src="https://1000logos.net/wp-content/uploads/2020/10/Duolingo-Logo-2013.png"
+          alt="Classroom Image"
           className="image"
-        />  
+        />
         <input
           type="text"
           className="login__textBox"
@@ -39,16 +54,18 @@ function Login() {
           onChange={(e) => setPassword(e.target.value)}
           placeholder="Password"
         />
-        <button
-          className="login__btn"
-          onClick={() => logInWithEmailAndPassword(email, password)}
-        >
+        {/* Conditionally render the error message */}
+        {loginError && (
+          <div className="login_textBox login_errorMessage">{loginError}</div>
+        )}
+        <button className="login__btn" onClick={handleLogin}>
           Login
         </button>
+
         <button className="login__btn login__google" onClick={signInWithGoogle}>
           Login with Google
         </button>
-        <div style={{fontSize:'16px'}}>
+        <div style={{ fontSize: "16px" }}>
           Don't have an account? <Link to="/register">Register</Link> now.
         </div>
       </div>
