@@ -123,9 +123,9 @@ def get_list_of_groups_of_plagiarized(folder_name):
         list_of_groups.append(_group)
     return list_of_groups
 
-get_list_of_groups_of_plagiarized = get_list_of_groups_of_plagiarized("files")
+list_of_groups_of_plagiarized = get_list_of_groups_of_plagiarized("files")
 
-print(get_list_of_groups_of_plagiarized)
+print(list_of_groups_of_plagiarized)
 
 index_of_list = int (input("Enter the index from the list of which you wanna see/generate plagiarized part."))
 get_the_list_of_selected_list = get_list_of_groups_of_plagiarized[index_of_list]
@@ -155,8 +155,3 @@ def generate_highlight_text_pdf_file(source_folder, destination_folder, file_lis
 
 
 generate_highlight_text_pdf_file("files" , "highlighted_pdfs", get_the_list_of_selected_list)
-
-
-
-
-

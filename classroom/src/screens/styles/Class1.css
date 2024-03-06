@@ -18,7 +18,12 @@
     font-weight: bold;
     font-size: 43px;
   }
-  
+  .class_id {
+    text-align: left;
+    font-weight: 400;
+    font-size: 30px; 
+    color: rgb(198, 219, 239);
+  }
   .class__announce {
     display: flex;
     width: 80%;

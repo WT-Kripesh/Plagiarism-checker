@@ -85,7 +85,11 @@ function Class() {
       <div className="class__Container">
       <div className="class__nameBox">
         <div className="class__name">{classData?.name}</div>
-        <h6>Class Id: {id}</h6>
+        <div className="class_id">
+        <p> 
+          {classData?.creatorName}
+        </p>
+          Class Id: {id}</div>
       </div>
 
       {posts && posts.length > 0 ? (

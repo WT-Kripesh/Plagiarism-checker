@@ -19,7 +19,7 @@ function Dashboard() {
       if (userData) {
         const enrolledClassrooms = userData.enrolledClassrooms;
         if (enrolledClassrooms) {
-          //console.log("Classes fetched", enrolledClassrooms);
+          console.log("Class fetched", enrolledClassrooms);
           setClasses(enrolledClassrooms);
         } else {
           console.log("No classes found for the user");
@@ -35,8 +35,6 @@ function Dashboard() {
     }
   };
   
-  
-  
   useEffect(() => {
     if (loading) return;
     if (!user) navigate("/");
@@ -45,6 +43,7 @@ function Dashboard() {
     if (loading) return;
     fetchClasses();
   }, [user, loading]);
+
   return (
     <div className="dashboard__body">
       {(classes === null || classes === undefined || classes.length === 0 )? (
@@ -54,14 +53,16 @@ function Dashboard() {
       ) : (
         <div className="dashboard__classContainer">
           {classes.map((individualClass,index) => (
-            <ClassCard
-              key={index} 
-              creatorName={individualClass.creatorName}
-              creatorPhoto={individualClass.creatorPhoto}
-              name={individualClass.name}
-              id={individualClass.id}
-              style={{ marginRight: 30, marginBottom: 30 }}
-            />
+            <div key={index}>
+              {console.log("Class:", individualClass)}
+              <ClassCard
+                key={index}
+                creatorName={individualClass.creatorName}
+                name={individualClass.name}
+                id={individualClass.id}
+                creatorid={individualClass.creatorUid}
+              />
+            </div>
           ))}
         </div>
       )}

@@ -79,7 +79,11 @@ function Class() {
     <div className="class">
       <div className="class__nameBox">
         <div className="class__name">{classData?.name}</div>
-        <div className="classid">Class Id: {id}</div>
+        <div className="class_id">
+        <p> 
+          {classData?.creatorName}
+        </p>
+          Class Id: {id}</div>
         <button className="list__button" onClick={listallfiles}>View all files</button>
       </div>
       <div className="class__announce">

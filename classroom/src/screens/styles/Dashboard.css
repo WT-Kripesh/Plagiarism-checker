@@ -1,6 +1,6 @@
 .dashboard__body{
   min-height: 100vh;
-  background-color: #f4f2f2;
+  background-color: aliceblue;
   /* background-image: url("./books.jpg");
   background-size: cover;
   background-position: center;
@@ -9,12 +9,13 @@
 
 .dashboard__404 {
   display: flex;
-  height: 100vh;
+  flex-direction: column-reverse;
+  height: 50vh;
   width: 100vw;
-  align-items: center;
-  justify-content: space-between;
   font-size: 20px;
   background-color: aliceblue;
+  text-align:center;
+
 }
 .dashboard__classContainer {
   display: flex;

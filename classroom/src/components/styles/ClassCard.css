@@ -12,6 +12,8 @@
     border-radius: 5px;
     overflow: hidden;
     cursor: pointer;
+    margin-right: 30px;
+    margin-bottom: 40px;
     box-shadow: 0px 4px 6px -2px black;
     background-color: #f4f2f2;
   }
@@ -19,11 +21,11 @@
     height: 190px;
     border-bottom: 1px solid #dcdcdc;
   }
-  .classCard__creatorPhoto {
+  /* .classCard__creatorPhoto {
     position: absolute;
     right: 5px;
     border-radius: 9999px;
-  }
+  } */
   .classCard__className {
     font-weight: 600;
     font-size: 26px;

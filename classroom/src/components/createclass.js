@@ -30,14 +30,14 @@ function CreateClass() {
         creatorUid: user.uid,
         name: className,
         creatorName: user.displayName,
-        creatorPhoto: user.photoURL,
         posts: [],
       });
-
+      {console.log(newClass)};
       // add to current user's class list
       const userRef = await getDocs(
         query(collection(db, "users"), where("uid", "==", user.uid))
       );
+      {console.log("user fetched",userRef)};
       if (!userRef.empty) {
         const docId = userRef.docs[0].id;
         const userData = userRef.docs[0].data();
@@ -46,7 +46,7 @@ function CreateClass() {
           id: newClass.id,
           name: className,
           creatorName: user.displayName,
-          creatorPhoto: user.photoURL,
+          creatorUid: user.uid,
         });
         await updateDoc(doc(db, "users", docId), {
           enrolledClassrooms: userClasses,
