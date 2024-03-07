@@ -1,29 +1,22 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { db, listFilesAndDirectories,downloadAll, getAllDownloadURLs } from "../components/firebase";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { db,auth,  getAllDownloadURLs } from "../components/firebase";
 import "./styles/Class1.css";
 import {  doc, onSnapshot } from "firebase/firestore";
 
 function Submission() {
   const { id, authorId } = useParams();
   const [ClassData, setClassData] = useState({});
+  const [user, loading] = useAuthState(auth);
   const [downloadLinks, setDownloadLinks] = useState([]);
   const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       // const files = await listFilesAndDirectories(authorId);
-  //       const files = await getAllDownloadURLs(authorId);
-  //       setFiles(files);
-  //       // await downloadAll(authorId);
-  //     } catch (error) {
-  //       console.error("Error fetching files:", error);
-  //     }
-  //   };
-  //   fetchData();
-  //   console.log(files);
-  // },
+  useEffect(() => {
+    if (loading) return;
+    if (!user) navigate("/");
+  }, [loading, user,navigate]);
+  
   useEffect(() => {
     async function fetchLinks() {
       try {
@@ -42,7 +35,7 @@ function Submission() {
       if (!data) navigate(`/class/${id}`);
       setClassData(data);
     });
-  }, []);
+  }, [id,navigate]);
 
   return (
     <div className="class">

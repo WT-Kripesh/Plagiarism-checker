@@ -15,7 +15,7 @@ function Announcement({ image, name, date, content, authorId }) {
   const handleUpload = () => {
    if (selectedFile) {
       // Upload the selected file to Firebase Storage
-      const uploadTask = uploadFileToStorage(selectedFile, authorId);
+      uploadFileToStorage(selectedFile, authorId);
           setuploaded(true);
 
     } else {

@@ -31,12 +31,12 @@ function Class() {
         setClassData(data);
       }
       ));
-  }, []);
+  }, [id,navigate]);
 
   useEffect(() => {
     if (loading) return;
     if (!user) navigate("/");
-  }, [loading, user]);
+  }, [loading, user,navigate]);
 
   return (
     <div className="class">

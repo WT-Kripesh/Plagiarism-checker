@@ -38,11 +38,8 @@ function Dashboard() {
   useEffect(() => {
     if (loading) return;
     if (!user) navigate("/");
-  }, [user, loading]);
-  useEffect(() => {
-    if (loading) return;
     fetchClasses();
-  }, [user, loading]);
+  }, [user, loading,navigate]);
 
   return (
     <div className="dashboard__body">
@@ -54,7 +51,7 @@ function Dashboard() {
         <div className="dashboard__classContainer">
           {classes.map((individualClass,index) => (
             <div key={index}>
-              {console.log("Class:", individualClass)}
+              {/* {console.log("Class:", individualClass)} */}
               <ClassCard
                 key={index}
                 creatorName={individualClass.creatorName}
