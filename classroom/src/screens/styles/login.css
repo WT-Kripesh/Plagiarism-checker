@@ -33,6 +33,11 @@
     background-color: #4285f4;
     cursor: pointer;
   }
+  .login_errorMessage {
+    color: red;
+    margin-bottom: 5px;
+    margin-top: 0px;
+  }
   .login__google {
     background-color: #c91111;
   }

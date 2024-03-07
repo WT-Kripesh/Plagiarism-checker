@@ -22,6 +22,16 @@ function Login() {
     }
     if (user) navigate("/dashboard");
   }, [user, loading]);
+  useEffect(() => {
+    let timer;
+    if (loginError) {
+      // Set a timer to clear the error message after 5 seconds
+      timer = setTimeout(() => {
+        setLoginError(""); // Clear the loginError after 5 seconds
+      }, 5000);
+    }
+    return () => clearTimeout(timer);
+  }, [loginError]);
 
   const handleLogin = async () => {
     try {
