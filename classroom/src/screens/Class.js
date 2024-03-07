@@ -19,51 +19,43 @@ function Class() {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  /*
-    PLAN: Create a snapshot listener and fill in the data into classData, 
-    and then map through it during render
-  */
-
   useEffect(() => {
     // reverse the array
     let reversedArray = classData?.posts?.reverse();
     setPosts(reversedArray);
   }, [classData]);
 
-  const createPost = async () => {
-    try {
-      const myClassRef = doc(db, "classes", id);
-      const myClassSnap = await getDoc(myClassRef);
+  // const createPost = async () => {
+  //   try {
+  //     const myClassRef = doc(db, "classes", id);
+  //     const myClassSnap = await getDoc(myClassRef);
 
-      if (myClassSnap.exists()) {
-        const myClassData = myClassSnap.data();
-        console.log(myClassData);
+  //     if (myClassSnap.exists()) {
+  //       const myClassData = myClassSnap.data();
+  //       console.log(myClassData);
 
-        let tempPosts = myClassData.posts || []; // Ensure tempPosts is initialized
+  //       let tempPosts = myClassData.posts || []; // Ensure tempPosts is initialized
 
-        tempPosts.push({
-          authorId: user.uid,
-          content: announcementContent,
-          date: moment().format("MMM Do YY"),
-          image: user.photoURL,
-          name: user.displayName,
-        });
+  //       tempPosts.push({
+  //         authorId: user.uid,
+  //         content: announcementContent,
+  //         date: moment().format("MMM Do YY"),
+  //         image: user.photoURL,
+  //         name: user.displayName,
+  //       });
 
-        await setDoc(myClassRef, { posts: tempPosts }, { merge: true });
+  //       await setDoc(myClassRef, { posts: tempPosts }, { merge: true });
 
-        console.log("Posts updated successfully!");
-      } else {
-        console.log("Class document not found!");
-      }
-    } catch (error) {
-      console.error(error);
-      alert(`There was an error posting the announcement, please try again!`);
-    }
-  };
+  //       console.log("Posts updated successfully!");
+  //     } else {
+  //       console.log("Class document not found!");
+  //     }
+  //   } catch (error) {
+  //     console.error(error);
+  //     alert(`There was an error posting the announcement, please try again!`);
+  //   }
+  // };
 
-  const listallfiles = async () => {
-    console.log(await listFilesAndDirectories("files"));
-  }
   useEffect(() => {
     onSnapshot(doc(db, "classes", id),
       ((snapshot) => {

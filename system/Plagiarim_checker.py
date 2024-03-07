@@ -100,7 +100,7 @@ def get_list_of_groups_of_plagiarized(folder_name):
                 similarity += calculate_cosine_similarity(pdf1, pdf2, n)
             similarity /= 3
 
-            # print(f"File1: {pdf1.split('/')[-1]}, File2: {pdf2.split('/')[-1]}, Similarity Between Them: {similarity}% \n\n")
+            #print(f"{pdf1.split('/')[-1]}  &  {pdf2.split('/')[-1]}, Similarity : {similarity}% \n\n")
             
             if similarity >= threshold:
                 group = {pdf1, pdf2}
@@ -125,10 +125,14 @@ def get_list_of_groups_of_plagiarized(folder_name):
 
 list_of_groups_of_plagiarized = get_list_of_groups_of_plagiarized("files")
 
-print(list_of_groups_of_plagiarized)
+# print(list_of_groups_of_plagiarized)
+i=0
+for item in list_of_groups_of_plagiarized:
+    print(i, item)
+    i+=1
 
 index_of_list = int (input("Enter the index from the list of which you wanna see/generate plagiarized part."))
-get_the_list_of_selected_list = get_list_of_groups_of_plagiarized[index_of_list]
+selected_list = list_of_groups_of_plagiarized[index_of_list]
 
 def highlight_word_in_pdf(pdf_path , destination_path , words):
     doc = fitz.open(pdf_path)
@@ -154,4 +158,4 @@ def generate_highlight_text_pdf_file(source_folder, destination_folder, file_lis
             highlight_word_in_pdf(file_path, destination_folder, common_words)
 
 
-generate_highlight_text_pdf_file("files" , "highlighted_pdfs", get_the_list_of_selected_list)
+generate_highlight_text_pdf_file("files" , "highlighted_pdfs", selected_list)

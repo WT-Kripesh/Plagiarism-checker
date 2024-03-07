@@ -129,5 +129,7 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
-System/*.pdf
-System/misc.odt
+system/files/highlighted_pdfs/*.pdf
+system/__pycache__/*.pyc
+
+system/__pycache__/

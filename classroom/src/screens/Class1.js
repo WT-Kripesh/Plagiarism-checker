@@ -100,6 +100,7 @@ function Class() {
       </div>
       {posts?.map((post) => (
         <Announcement1
+          id={id}
           authorId={post.authorId}
           content={post.content}
           date={post.date}

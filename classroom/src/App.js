@@ -5,6 +5,7 @@ import Register from "./screens/register"
 import Navbar from './components/navbar';
 import Class from './screens/Class';
 import Class1 from './screens/Class1'
+import Submission from './screens/submission';
 import { BrowserRouter as 
   Router, Route, Routes} from "react-router-dom";
 
@@ -32,6 +33,12 @@ function App() {
         <Class1 />
         </>
       } />
+      <Route exact path="/submissions/:id/:authorId" element={
+        <>
+        <Navbar/>
+        <Submission />
+        </>
+      }/>
       </Routes>
     </Router>
   </div>;

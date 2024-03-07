@@ -6,8 +6,6 @@ import "./styles/Announcement.css";
 
 function Announcement({ image, name, date, content, authorId }) {
   const [selectedFile, setSelectedFile] = useState(null);
-  const [uploadProgress, setUploadProgress] = useState(0);
-  const [uploadError, setUploadError] = useState(null);
   const [uploaded, setuploaded] = useState(false);
 
   const handleFileChange = (event) => {
@@ -15,27 +13,28 @@ function Announcement({ image, name, date, content, authorId }) {
   };
 
   const handleUpload = () => {
-    if (selectedFile) {
+   if (selectedFile) {
       // Upload the selected file to Firebase Storage
       const uploadTask = uploadFileToStorage(selectedFile, authorId);
+          setuploaded(true);
 
       // Monitor the upload progress
-      uploadTask.on(
-        "state_changed",
-        (snapshot) => {
-          const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-          setUploadProgress(progress);
-          console.log(`Upload of ${selectedFile.name} is ${progress}% done`);
-        },
-        (error) => {
-          setUploadError(error.message);
-          console.error(`Error uploading ${selectedFile.name}:`, error);
-        },
-        () => {
-          setuploaded(true);
-          console.log(`${selectedFile.name} uploaded successfully`);
-        }
-      );
+      // uploadTask.on(
+      //   "state_changed",
+      //   (snapshot) => {
+      //     const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+      //     setUploadProgress(progress);
+      //     console.log(`Upload of ${selectedFile.name} is ${progress}% done`);
+      //   },
+      //   (error) => {
+      //     setUploadError(error.message);
+      //     console.error(`Error uploading ${selectedFile.name}:`, error);
+      //   },
+      //   () => {
+      //     setuploaded(true);
+      //     console.log(`${selectedFile.name} uploaded successfully`);
+      //   }
+      // );
     } else {
       console.log("No file selected");
     }
@@ -61,14 +60,14 @@ function Announcement({ image, name, date, content, authorId }) {
       </div>
       <div className="announcement__content">{content}</div>
       <div className="buttonContainer">
-        <input type="file" onChange={handleFileChange} />
+
+      <input type="file" onChange={handleFileChange} />
+
         <button className="assignment__upload" onClick={handleUpload}>
           Upload your work
         </button>
       </div>
-      {uploadProgress > 0 && uploadProgress < 100 && <div>Upload Progress: ${uploadProgress}%</div>}
       {uploaded && <div >{selectedFile.name} uploaded successfully</div>}
-      {uploadError && <div >Error: {uploadError}</div>}
     </div>
   );
 }
