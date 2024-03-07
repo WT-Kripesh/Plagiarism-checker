@@ -18,23 +18,6 @@ function Announcement({ image, name, date, content, authorId }) {
       const uploadTask = uploadFileToStorage(selectedFile, authorId);
           setuploaded(true);
 
-      // Monitor the upload progress
-      // uploadTask.on(
-      //   "state_changed",
-      //   (snapshot) => {
-      //     const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-      //     setUploadProgress(progress);
-      //     console.log(`Upload of ${selectedFile.name} is ${progress}% done`);
-      //   },
-      //   (error) => {
-      //     setUploadError(error.message);
-      //     console.error(`Error uploading ${selectedFile.name}:`, error);
-      //   },
-      //   () => {
-      //     setuploaded(true);
-      //     console.log(`${selectedFile.name} uploaded successfully`);
-      //   }
-      // );
     } else {
       console.log("No file selected");
     }

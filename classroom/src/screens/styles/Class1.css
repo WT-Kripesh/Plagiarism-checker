@@ -61,4 +61,9 @@
       color: white;
       background-color:rgb(223, 26, 26,0.8);
   }
+
+  .file_list {
+    text-align: left;
+    font-size: 16px;
+  }
   

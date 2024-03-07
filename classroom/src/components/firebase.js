@@ -15,7 +15,7 @@ import {
   where,
   addDoc,
 } from "firebase/firestore";
-import { getStorage, ref, listAll, uploadBytes } from "firebase/storage";
+import { getStorage, ref, listAll, uploadBytes ,getDownloadURL} from "firebase/storage";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBYoANYkWlSA5W3zoK0Rqq93EgZpzm_0cg",
@@ -32,16 +32,11 @@ const db = getFirestore(app);
 const storage = getStorage(app);
 const googleProvider = new GoogleAuthProvider();
 
-const listFilesAndDirectories = async (directory) => {
-  try {
-    const listRef = ref(storage, directory);
-    const result = await listAll(listRef);
-    return result;
-  } catch (error) {
-    console.error("Error listing files and directories:", error);
-    throw error;
-  }
-};
+
+
+
+
+
 
 const signInWithGoogle = async () => {
   try {
@@ -89,21 +84,103 @@ const registerWithEmailAndPassword = async (name, email, password) => {
 const logout = () => {
   signOut(auth);
 };
-const uploadFileToStorage = async (file, userId) => {
+
+
+
+
+
+
+const uploadFileToStorage = async (file, announcementId) => {
   try {
-    const storageRef = ref(storage, `files/${userId}/${file.name}`);
+    const storageRef = ref(storage, `files/${announcementId}/${file.name}`);
     await uploadBytes(storageRef, file);
     console.log("File uploaded successfully!");
   } catch (error) {
-    console.error("Error uploading file:", error);
+    alert("Error uploading file:", error);
   }
 };
-// const uploadFileToStorage = (file, authorId) => {
-//   const storageRef = ref(storage, `files/${authorId}/${file.name}`);
-//   const uploadTask = uploadBytesResumable(storageRef, file);
 
-//   return uploadTask;
-// };
+const listFilesAndDirectories = async (directory) => {
+  try {
+    const listRef = ref(storage, `files/${directory}`);
+    const result = await listAll(listRef);
+    return result.items.map(item => item.name); // Extract filenames
+  } catch (error) {
+    console.error("Error listing files and directories:", error);
+    throw error;
+  }
+  
+};
+const downloadAll = async (directory) => {
+  try {
+    const listRef = ref(storage, `files/${directory}`);
+    const result = await listAll(listRef);
+    const list=result.items.map(item => item.name);
+
+    list.map(async (filename,index) => {
+      console.log(`File ${index + 1}: ${filename}`);
+      const filesRef = ref(storage, `files/${directory}/${filename}`);
+      const downloadURL = await getDownloadURL(filesRef);
+      console.log(`Link ${index + 1}: ${downloadURL}`);
+    //   downloadURL.forEach(url => {
+    //   const link = document.createElement('a');
+    //   link.href = url;
+    //   link.download = url.substring(url.lastIndexOf('/') + 1); // Set the filename
+    //   document.body.appendChild(link);
+    //   link.click();
+    //   document.body.removeChild(link);
+    // });
+  });
+    
+  } catch (error) {
+    console.error("Error downloading files:", error);
+    // Handle errors
+  }
+  
+  // getDownloadURL(filesRef)
+  // .then((url) => {
+  //   // Insert url into an <img> tag to "download"
+  // })
+  // .catch((error) => {
+  //   console.log(error.code);
+  //   }
+  // );
+}
+async function getAllDownloadURLs(directory) {
+  try {
+    const listRef = ref(storage, `files/${directory}`);
+    const result = await listAll(listRef);
+    const list=result.items.map(item => item.name);
+
+    // const urls = await Promise.all(list.map(async (filename) => {
+    //   const filesRef = ref(storage, `files/${directory}/${filename}`);
+    //   const downloadURL = await getDownloadURL(filesRef);
+    //   return { [filename]: downloadURL };
+    // }));
+    // return urls;
+    const downloadLinks = await Promise.all(
+      list.map(async (filename) => {
+        const filesRef = ref(storage, `files/${directory}/${filename}`);
+        const downloadURL = await getDownloadURL(filesRef);
+        // console.log(filename,downloadURL);
+        return { filename, downloadURL };
+      })
+    );
+    console.log("links",downloadLinks);
+    return downloadLinks;
+
+  } catch (error) {
+    console.error("Error getting download URLs:", error);
+    throw error;
+  }
+}
+
+
+
+
+
+
+
 export {
   app,
   auth,
@@ -114,4 +191,6 @@ export {
   logout,
   uploadFileToStorage,
   listFilesAndDirectories,
+  downloadAll,
+  getAllDownloadURLs,
 };
