@@ -4,7 +4,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { db,auth,  getAllDownloadURLs } from "../components/firebase";
 import "./styles/Class1.css";
 import {  doc, onSnapshot } from "firebase/firestore";
-
+import axios from 'axios';
 function Submission() {
   const { id, authorId } = useParams();
   const [ClassData, setClassData] = useState({});
@@ -37,6 +37,18 @@ function Submission() {
     });
   }, [id,navigate]);
 
+  const handleCheck = () =>{
+    console.log(downloadLinks, "jdvjn")
+    axios.post('http://localhost:5000/submit-pdfs', { downloadLinks })
+        .then(response => {
+            console.log(response.data);
+            // Handle response from backend if needed
+        })
+        .catch(error => {
+            console.error('Error submitting PDF links:', error);
+        });
+  }
+
   return (
     <div className="class">
       <div className="class__nameBox">
@@ -49,6 +61,7 @@ function Submission() {
           Announcement Id: {authorId}
         </div>
       </div>
+      <button onClick={handleCheck}>check Plagarism</button>
       <div className="file_list">
         <ol>
           {/* {files.map(( filename,url) => (
