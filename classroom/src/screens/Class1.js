@@ -15,7 +15,7 @@ function Class() {
   const [classData, setClassData] = useState({});
   const [announcementContent, setAnnouncementContent] = useState("");
   const [posts, setPosts] = useState([]);
-  const [user, loading, error] = useAuthState(auth);
+  const [user, loading] = useAuthState(auth);
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -60,20 +60,16 @@ function Class() {
     console.log(await listFilesAndDirectories("files"));
   }
   useEffect(() => {
-    onSnapshot(doc(db, "classes", id),
-      ((snapshot) => {
-        const data = snapshot.data();
-        if (!data) navigate("/");
-        //console.log(data);
-        setClassData(data);
-      }
-      ));
-  }, []);
-
-  useEffect(() => {
-    if (loading) return;
-    if (!user) navigate("/");
-  }, [loading, user]);
+    if (loading || !user) return;
+  
+    // Fetch class data
+    onSnapshot(doc(db, "classes", id), (snapshot) => {
+      const data = snapshot.data();
+      if (!data) navigate("/");
+      setClassData(data);
+    });
+  }, [id, loading, user, navigate]);
+  
 
   return (
     <div className="class">

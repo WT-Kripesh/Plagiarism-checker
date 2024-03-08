@@ -11,7 +11,7 @@ import JoinClass from "./joinclass";
 import "./styles/navbar.css";
 
 function Navbar() {
-  const [user, loading, error] = useAuthState(auth);
+  const [user] = useAuthState(auth);
   const [anchorEl, setAnchorEl] = useState(null);
   const [createOpened, setCreateOpened] = useRecoilState(createDialogAtom);
   const [joinOpened, setJoinOpened] = useRecoilState(joinDialogAtom);
@@ -61,22 +61,22 @@ function Navbar() {
             open={Boolean(anchorEl)}
             onClose={handleClose}
           >
-            <MenuItem
+            {!createOpened && <MenuItem
               onClick={() => {
                 setCreateOpened(true);
                 handleClose();
               }}
             >
               Create Class
-            </MenuItem>
-            <MenuItem
+            </MenuItem>}
+            {!joinOpened && <MenuItem
               onClick={() => {
                 setJoinOpened(true);
                 handleClose();
               }}
             >
               Join Class
-            </MenuItem>
+            </MenuItem>}
           </Menu>
         </div>
       </nav>
