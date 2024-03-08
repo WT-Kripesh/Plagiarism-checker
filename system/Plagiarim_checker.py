@@ -4,7 +4,8 @@ import re
 import math
 import os
 from itertools import combinations
-import fitz  # PyMuPDF
+import fitz  
+# PyMuPDF
 import string
 
 def extract_text_from_pdf(pdf_path):
