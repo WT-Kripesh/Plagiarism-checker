@@ -28,18 +28,18 @@ def tokenize_the_text(text, n):
 
 
 
-def get_pdf_list(folder_name):
-    pdf_files_list = []
+# def get_pdf_list(folder_name):
+#     pdf_files_list = []
     
-    # Check if the folder exists
-    if os.path.exists(folder_name):
-        for file_name in os.listdir(folder_name):
-            if file_name.lower().endswith('.pdf'):
-                pdf_files_list.append(file_name)
-    else:
-        print(f"Folder '{folder_name}' does not exist.")
+#     # Check if the folder exists
+#     if os.path.exists(folder_name):
+#         for file_name in os.listdir(folder_name):
+#             if file_name.lower().endswith('.pdf'):
+#                 pdf_files_list.append(file_name)
+#     else:
+#         print(f"Folder '{folder_name}' does not exist.")
 
-    return pdf_files_list
+#     return pdf_files_list
 
 
 def calculate_cosine_similarity(file_path_1, file_path_2, n):
@@ -85,11 +85,16 @@ def calculate_cosine_similarity(file_path_1, file_path_2, n):
     return y * 100
 
 
-threshold = 40
-def get_list_of_groups_of_plagiarized(folder_name):
-    pdf_list = get_pdf_list(folder_name)
+threshold = 20
+# def get_list_of_groups_of_plagiarized(folder_name):
+#     pdf_list = get_pdf_list(folder_name)
+#     list_of_groups_of_plagiarized = []
+#     pdf_list_path = ["./" + folder_name + "/" +pdf_file_name for pdf_file_name in pdf_list]
+#     visited = set()
+def get_list_of_groups_of_plagiarized(downloaded_files):
     list_of_groups_of_plagiarized = []
-    pdf_list_path = ["./" + folder_name + "/" +pdf_file_name for pdf_file_name in pdf_list]
+    pdf_list = [filename for filename, _ in downloaded_files]  # Extract filenames
+    pdf_list_path = [file_path for _, file_path in downloaded_files]
     visited = set()
     
     for pdf1, pdf2 in combinations(pdf_list_path, 2):
@@ -101,7 +106,7 @@ def get_list_of_groups_of_plagiarized(folder_name):
                 similarity += calculate_cosine_similarity(pdf1, pdf2, n)
             similarity /= 3
 
-            #print(f"{pdf1.split('/')[-1]}  &  {pdf2.split('/')[-1]}, Similarity : {similarity}% \n\n")
+            # print(f"{pdf1.split('/')[-1]}  &  {pdf2.split('/')[-1]}, Similarity : {similarity}% \n\n")
             
             if similarity >= threshold:
                 group = {pdf1, pdf2}
@@ -124,39 +129,39 @@ def get_list_of_groups_of_plagiarized(folder_name):
         list_of_groups.append(_group)
     return list_of_groups
 
-list_of_groups_of_plagiarized = get_list_of_groups_of_plagiarized("files")
+# list_of_groups_of_plagiarized = get_list_of_groups_of_plagiarized("files")
 
 # print(list_of_groups_of_plagiarized)
-i=0
-for item in list_of_groups_of_plagiarized:
-    print(i, item)
-    i+=1
+# i=0
+# for item in list_of_groups_of_plagiarized:
+#     print(i, item)
+#     i+=1
 
-index_of_list = int (input("Enter the index from the list of which you wanna see/generate plagiarized part."))
-selected_list = list_of_groups_of_plagiarized[index_of_list]
+# index_of_list = int (input("Enter the index from the list of which you wanna see/generate plagiarized part."))
+# selected_list = list_of_groups_of_plagiarized[index_of_list]
 
-def highlight_word_in_pdf(pdf_path , destination_path , words):
-    doc = fitz.open(pdf_path)
-    for page in doc:
-        for word in words:
-            for idx, found_rect in enumerate(page.search_for(word)):
-                page.add_highlight_annot(found_rect)
-    temp_path = ((pdf_path.replace('.pdf', '_highlighted.pdf')).rsplit('/',1))[1]
-    doc.save(destination_path+'/'+temp_path)
-    doc.close()
+# def highlight_word_in_pdf(pdf_path , destination_path , words):
+#     doc = fitz.open(pdf_path)
+#     for page in doc:
+#         for word in words:
+#             for idx, found_rect in enumerate(page.search_for(word)):
+#                 page.add_highlight_annot(found_rect)
+#     temp_path = ((pdf_path.replace('.pdf', '_highlighted.pdf')).rsplit('/',1))[1]
+#     doc.save(destination_path+'/'+temp_path)
+#     doc.close()
 
-def generate_highlight_text_pdf_file(source_folder, destination_folder, file_list):
-    destination_folder = source_folder + '/' + destination_folder
-    if not os.path.exists(destination_folder):
-        os.makedirs(destination_folder)
+# def generate_highlight_text_pdf_file(source_folder, destination_folder, file_list):
+#     destination_folder = source_folder + '/' + destination_folder
+#     if not os.path.exists(destination_folder):
+#         os.makedirs(destination_folder)
     
-    pdf_list_path = ["./"+source_folder+"/"+file_path for file_path in file_list]
-    texts = [tokenize_the_text(extract_text_from_pdf(file_path), 5) for file_path in pdf_list_path]
-    common_words = set(texts[0]).intersection(*texts[1:])
-    # print(common_words)
-    for file_path in pdf_list_path:
-        for word in common_words:
-            highlight_word_in_pdf(file_path, destination_folder, common_words)
+#     pdf_list_path = ["./"+source_folder+"/"+file_path for file_path in file_list]
+#     texts = [tokenize_the_text(extract_text_from_pdf(file_path), 5) for file_path in pdf_list_path]
+#     common_words = set(texts[0]).intersection(*texts[1:])
+#     # print(common_words)
+#     for file_path in pdf_list_path:
+#         for word in common_words:
+#             highlight_word_in_pdf(file_path, destination_folder, common_words)
 
 
-generate_highlight_text_pdf_file("files" , "highlighted_pdfs", selected_list)
+# generate_highlight_text_pdf_file("files" , "highlighted_pdfs", selected_list)

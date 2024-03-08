@@ -11,6 +11,7 @@ function Submission() {
   const [ClassData, setClassData] = useState({});
   const [user, loading] = useAuthState(auth);
   const [downloadLinks, setDownloadLinks] = useState([]);
+  const [listOfGroups, setListOfGroups] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -38,17 +39,17 @@ function Submission() {
     });
   }, [id, navigate]);
 
-  const handleCheck = () => {
-    console.log(downloadLinks, "jdvjn");
-    axios
-      .post("http://localhost:5000/submit-pdfs", { downloadLinks })
-      .then((response) => {
-        console.log(response.data);
-        // Handle response from backend if needed
-      })
-      .catch((error) => {
-        console.error("Error submitting PDF links:", error);
+  const handleCheck = async () => {
+    try {
+      const response = await axios.post("http://localhost:5000/submit-pdfs", {
+        downloadLinks,
       });
+      console.log(response.data);
+      const list_of_groups_of_plagiarized = response.data.data;
+      setListOfGroups(list_of_groups_of_plagiarized);
+    } catch (error) {
+      console.error("Error submitting PDF links:", error);
+    }
   };
 
   return (
@@ -63,14 +64,18 @@ function Submission() {
           Announcement Id: {authorId}
         </div>
       </div>
-      <button className="check_plag_button" onClick={handleCheck}>
+      <button onClick={handleCheck} className="check_plag_button">
         check Plagiarism
       </button>
+      <div>
+        <ol>
+          {listOfGroups.map((group, index) => (
+            <li key={index}>{group}</li>
+          ))}
+        </ol>
+      </div>
       <div className="file_list">
         <ol className="file_list_ol">
-          {/* {files.map(( filename,url) => (
-            <li >{filename} {url}</li> */}
-          {/* ))} */}
           {downloadLinks.map((linkObj, index) => (
             <div key={index} className="download_container">
               <p>Filename: {linkObj.filename}</p>
