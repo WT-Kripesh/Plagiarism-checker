@@ -42,35 +42,63 @@
   width: 50px;
   border-radius: 9999px;
 }
+@media screen and (max-width: 720px) {
 
+  .announcement__imageContainer > img {
+    height: 40px;
+    width: 40px;
+    border-radius: 9999px;
+  }
+}
 .buttonContainer {
-  flex: 1; /* This allows the button container to take up remaining space */
   display: flex;
-  flex-direction: row-reverse;
-  justify-content: center; /* Align button to the right */ 
+  flex-direction: column;
+  align-items: center;
 }
 
 .buttonContainer input[type="file"] {
-  /* Add styles for the file input if needed */
-  align-items: center;
-  margin-left: 20px;
+  width: 25%;
+  justify-content: space-around;
   margin-top: 8px; /* Add margin between the file input and the button */
 }
+
 .assignment__upload {
+  width: 40%;
   margin-top: 6px;
   font-weight: 600;
-  font-size: 14px;
-  cursor: pointer;
-  padding: 6px;
+  font-size: 16px;
   border: none;
-    border-radius: 10px;
-    color: white;
-    background-color: #4285f4;
+  border-radius: 20px;
+  color: white;
+  background-color: #4285f4;
+  cursor: pointer;
+  padding: 10px;
 }
+
+@media screen and (max-width: 720px) {
+  .assignment__upload {
+    font-weight: 400;
+    font-size: 13px;
+    padding: 4px;
+  }
+}
+
 .assignment__view {
-  margin-left:10px ;
+  width: 50%;
+  margin-top: 6px;
   padding-left: 40px;
   padding-right: 35px;
+  border-radius: 16px;
   background-color: rgb(12, 148, 12);
 }
+
+@media screen and (max-width: 720px) {
+  .assignment__view {
+    font-weight: 400;
+    font-size: 14px;
+    padding: 8px;
+  }
+}
+
+
 

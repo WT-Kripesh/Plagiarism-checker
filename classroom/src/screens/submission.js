@@ -5,6 +5,7 @@ import { db,auth,  getAllDownloadURLs } from "../components/firebase";
 import "./styles/Class1.css";
 import {  doc, onSnapshot } from "firebase/firestore";
 import axios from 'axios';
+
 function Submission() {
   const { id, authorId } = useParams();
   const [ClassData, setClassData] = useState({});
@@ -28,8 +29,8 @@ function Submission() {
       }
     }
     fetchLinks();
-  }, [authorId]); // Trigger fetch when authorId changes
-
+  }, [authorId]); 
+  
   useEffect(() => {
     onSnapshot(doc(db, "classes", id), (snapshot) => {
       const data = snapshot.data();

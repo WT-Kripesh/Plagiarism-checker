@@ -13,7 +13,6 @@ function Dashboard() {
   const navigate = useNavigate();
 
   
-  //eslint-disable-next-line
   useEffect(() => {
     const fetchClasses = async () => {
       try {
@@ -22,7 +21,7 @@ function Dashboard() {
         if (userData) {
           const enrolledClassrooms = userData.enrolledClassrooms;
           if (enrolledClassrooms) {
-            console.log("Class fetched", enrolledClassrooms);
+            console.log("Class fetched");
             setClasses(enrolledClassrooms);
           } else {
             console.log("No classes found for the user");
@@ -38,8 +37,8 @@ function Dashboard() {
       }
     };
     if (loading) return;
-    if (!user) navigate("/");
-    fetchClasses();
+    if (!loading && user) fetchClasses();
+    else navigate("/");
   }, [user, loading,navigate]);
 
   return (
@@ -52,7 +51,6 @@ function Dashboard() {
         <div className="dashboard__classContainer">
           {classes.map((individualClass,index) => (
             <div key={index}>
-              {/* {console.log("Class:", individualClass)} */}
               <ClassCard
                 key={index}
                 creatorName={individualClass.creatorName}

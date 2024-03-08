@@ -166,7 +166,6 @@ async function getAllDownloadURLs(directory) {
         return { filename, downloadURL };
       })
     );
-    console.log("links",downloadLinks);
     return downloadLinks;
 
   } catch (error) {

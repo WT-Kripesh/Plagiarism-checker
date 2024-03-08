@@ -94,8 +94,9 @@ function Class() {
           <SendOutlined />
         </IconButton>
       </div>
-      {posts?.map((post) => (
+      {posts?.map((post,index) => (
         <Announcement1
+          key={index}
           id={id}
           authorId={post.authorId}
           content={post.content}

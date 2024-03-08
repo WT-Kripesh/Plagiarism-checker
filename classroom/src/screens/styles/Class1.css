@@ -1,27 +1,30 @@
 .class {
     width: 55%;
+    height: fit-content;
     margin: auto;
   }
   
   .class__nameBox {
     width: 100%;
+    height: fit-content;
     background-color: #0a9689;
     color: white;
-    height: 40vh;
     margin-top: 20px;
     border-radius: 10px;
     display: flex;
     flex-direction:column;
     align-items:flex-start;
     justify-content: space-between;
-    padding: 30px;
+    padding: 20px;
+    padding-left: 40px;
+    text-align: left;
     font-weight: bold;
-    font-size: 43px;
+    font-size: 36px;
   }
   .class_id {
     text-align: left;
     font-weight: 400;
-    font-size: 30px; 
+    font-size: 20px; 
     color: rgb(198, 219, 239);
   }
   .class__announce {

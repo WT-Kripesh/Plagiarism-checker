@@ -45,7 +45,7 @@ function Announcement({ image, name, date, content, authorId }) {
       <div className="buttonContainer">
 
       <input type="file" onChange={handleFileChange} />
-
+      {selectedFile && <div >{selectedFile.name}</div>}
         <button className="assignment__upload" onClick={handleUpload}>
           Upload your work
         </button>

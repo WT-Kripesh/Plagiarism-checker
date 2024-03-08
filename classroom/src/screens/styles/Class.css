@@ -4,10 +4,10 @@
   }
 
 .class__nameBox {
-  width: 100%;
+  width: auto;
+  height: fit-content;
   background-color: #0a9689;
   color: white;
-  height: 10vh;
   margin-top: 30px;
   margin-bottom: 30px;
   border-radius: 10px;
