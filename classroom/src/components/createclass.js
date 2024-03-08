@@ -19,7 +19,7 @@ function CreateClass() {
   const [user] = useAuthState(auth);
   const [open, setOpen] = useRecoilState(createDialogAtom);
   const [className, setClassName] = useState("");
-  const [errmsg,seterrmsg] = useState("");
+  // const [errmsg,seterrmsg] = useState("");
   const handleClose = () => {
     setOpen(false);
     window.location.reload();
@@ -32,12 +32,12 @@ function CreateClass() {
         creatorName: user.displayName,
         posts: [],
       });
-      {console.log(newClass)};
+      console.log(newClass);
       // add to current user's class list
       const userRef = await getDocs(
         query(collection(db, "users"), where("uid", "==", user.uid))
       );
-      {console.log("user fetched",userRef)};
+      console.log("user fetched",userRef);
       if (!userRef.empty) {
         const docId = userRef.docs[0].id;
         const userData = userRef.docs[0].data();

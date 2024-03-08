@@ -12,7 +12,7 @@ import "./styles/login.css";
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [user, loading, error] = useAuthState(auth);
+  const [user, loading] = useAuthState(auth);
   const [loginError, setLoginError] = useState(null); // Add state for login error
   const navigate = useNavigate();
   useEffect(() => {
@@ -21,7 +21,7 @@ function Login() {
       return;
     }
     if (user) navigate("/dashboard");
-  }, [user, loading]);
+  }, [user, loading,navigate]);
   useEffect(() => {
     let timer;
     if (loginError) {
@@ -47,7 +47,7 @@ function Login() {
       <div className="login__container">
         <img
           src="https://1000logos.net/wp-content/uploads/2020/10/Duolingo-Logo-2013.png"
-          alt="Classroom Image"
+          alt="Classroom"
           className="image"
         />
         <input

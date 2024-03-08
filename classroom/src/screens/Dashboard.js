@@ -12,30 +12,31 @@ function Dashboard() {
   const [classes, setClasses] = useState([]);
   const navigate = useNavigate();
 
-  const fetchClasses = async () => {
-    try {
-      const querySnapshot = await getDocs(query(collection(db, "users"), where("uid", "==", user.uid)));
-      const userData = querySnapshot.docs[0]?.data();
-      if (userData) {
-        const enrolledClassrooms = userData.enrolledClassrooms;
-        if (enrolledClassrooms) {
-          console.log("Class fetched", enrolledClassrooms);
-          setClasses(enrolledClassrooms);
+  
+  //eslint-disable-next-line
+  useEffect(() => {
+    const fetchClasses = async () => {
+      try {
+        const querySnapshot = await getDocs(query(collection(db, "users"), where("uid", "==", user.uid)));
+        const userData = querySnapshot.docs[0]?.data();
+        if (userData) {
+          const enrolledClassrooms = userData.enrolledClassrooms;
+          if (enrolledClassrooms) {
+            console.log("Class fetched", enrolledClassrooms);
+            setClasses(enrolledClassrooms);
+          } else {
+            console.log("No classes found for the user");
+            setClasses([]);
+          }
         } else {
-          console.log("No classes found for the user");
+          console.log("User data not found");
           setClasses([]);
         }
-      } else {
-        console.log("User data not found");
+      } catch (error) {
+        console.error("Error fetching classes:", error);
         setClasses([]);
       }
-    } catch (error) {
-      console.error("Error fetching classes:", error);
-      setClasses([]);
-    }
-  };
-  
-  useEffect(() => {
+    };
     if (loading) return;
     if (!user) navigate("/");
     fetchClasses();

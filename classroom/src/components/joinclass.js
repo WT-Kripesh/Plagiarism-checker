@@ -18,7 +18,7 @@ import {query,getDoc,getDocs,where,collection,updateDoc,doc,} from 'firebase/fir
 
 function JoinClass() {
     const [open, setOpen] = useRecoilState(joinDialogAtom);
-    const [user, loading, error] = useAuthState(auth);
+    const [user] = useAuthState(auth);
     const [classId, setClassId] = useState("");
     const navigate=useNavigate();
 
@@ -38,7 +38,7 @@ function JoinClass() {
             }
     
             const classData = classSnapshot.data(); 
-            {console.log("class data fetched",classData)}
+            console.log("class data fetched",classData)
             // Get user document reference
 
             const userRef = await getDocs(
@@ -50,7 +50,7 @@ function JoinClass() {
 
             const docId = userRef.docs[0].id;
             const userData = userRef.docs[0].data();
-            {console.log("user data fetched",userData.enrolledClassrooms)}
+            console.log("user data fetched",userData.enrolledClassrooms);
             let tempClassrooms = userData.enrolledClassrooms || [];
             
             const alreadyEnrolled = tempClassrooms.some(classroom => classroom.id === classId);
