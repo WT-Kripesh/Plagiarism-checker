@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { db,auth,  getAllDownloadURLs } from "../components/firebase";
+import { db, auth, getAllDownloadURLs } from "../components/firebase";
 import "./styles/Class1.css";
-import {  doc, onSnapshot } from "firebase/firestore";
-import axios from 'axios';
+import { doc, onSnapshot } from "firebase/firestore";
+import axios from "axios";
 
 function Submission() {
   const { id, authorId } = useParams();
@@ -17,8 +17,8 @@ function Submission() {
   useEffect(() => {
     if (loading) return;
     if (!user) navigate("/");
-  }, [loading, user,navigate]);
-  
+  }, [loading, user, navigate]);
+
   useEffect(() => {
     async function fetchLinks() {
       try {
@@ -37,16 +37,18 @@ function Submission() {
       if (!data) navigate(`/class/${id}`);
       setClassData(data);
     });
-  }, [id,navigate]);
+  }, [id, navigate]);
 
   const handleCheck = async () => {
     try {
-        const response = await axios.post('http://localhost:5000/submit-pdfs', { downloadLinks });
-        console.log(response.data);
-        const list_of_groups_of_plagiarized = response.data.data;
-        setListOfGroups(list_of_groups_of_plagiarized);
+      const response = await axios.post("http://localhost:5000/submit-pdfs", {
+        downloadLinks,
+      });
+      console.log(response.data);
+      const list_of_groups_of_plagiarized = response.data.data;
+      setListOfGroups(list_of_groups_of_plagiarized);
     } catch (error) {
-        console.error('Error submitting PDF links:', error);
+      console.error("Error submitting PDF links:", error);
     }
   };
 
@@ -62,7 +64,9 @@ function Submission() {
           Announcement Id: {authorId}
         </div>
       </div>
-      <button onClick={handleCheck}>check Plagarism</button>
+      <button onClick={handleCheck} className="check_plag_button">
+        check Plagiarism
+      </button>
       <div>
         <ol>
           {listOfGroups.map((group, index) => (
@@ -71,15 +75,15 @@ function Submission() {
         </ol>
       </div>
       <div className="file_list">
-        <ol>
+        <ol className="file_list_ol">
           {downloadLinks.map((linkObj, index) => (
-        <div key={index}>
-          <p>Filename: {linkObj.filename}</p>
-          <a href={linkObj.downloadURL} target="_blank" rel="noreferrer">
-            Download Link
-          </a>
-        </div>
-      ))}
+            <div key={index} className="download_container">
+              <p>Filename: {linkObj.filename}</p>
+              <a href={linkObj.downloadURL} target="_blank" rel="noreferrer">
+                Download Link
+              </a>
+            </div>
+          ))}
         </ol>
       </div>
     </div>
