@@ -67,11 +67,22 @@ function Submission() {
       <button onClick={handleCheck} className="check_plag_button">
         check Plagiarism
       </button>
-      <div>
-        <ol>
-          {listOfGroups.map((group, index) => (
-            <li key={index}>{group}</li>
-          ))}
+      <div className="donwload_container">
+        <p className="group_list">List of groups of plagiarized</p>
+        <ol className="file_list">
+        {listOfGroups.map((group, index) => (
+    <div key={index} className="grouplist_container">
+        <ul className="download_container">
+            {group.map((item, idx) => (
+                <p key={idx}>{item}</p>
+            ))}
+        <button className="list__button">View pdfs</button>
+        </ul>
+    </div>
+
+))
+}
+
         </ol>
       </div>
       <div className="file_list">
@@ -80,7 +91,7 @@ function Submission() {
             <div key={index} className="download_container">
               <p>Filename: {linkObj.filename}</p>
               <a href={linkObj.downloadURL} target="_blank" rel="noreferrer">
-                Download Link
+                View submission
               </a>
             </div>
           ))}
