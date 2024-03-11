@@ -1,7 +1,8 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_file
 from flask_cors import CORS
 import requests
 import os
+from firebase_admin import credentials, storage,initialize_app
 
 from Plagiarim_checker import get_list_of_groups_of_plagiarized,highlight_the_pdfs
 
@@ -9,7 +10,7 @@ app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes
 
 @app.route('/submit-pdfs', methods=['POST'])
-def submit_pdfs():
+def recieve_pdfs():
     data = request.json
     download_links = [] 
     # Extract filename and downloadURL for each link object
@@ -19,11 +20,11 @@ def submit_pdfs():
         download_links.append((filename, download_url))
     print("hello1")
 
-    downloaded_files = download_pdfs(download_links, "./Pdfs")
+    downloaded_files = download_pdfs(download_links, "./files/Pdfs")
     list_of_groups_of_plagiarized = get_list_of_groups_of_plagiarized(downloaded_files)
     print("highlighting started")
-    highlight_the_pdfs(list_of_groups_of_plagiarized,"./Pdfs")
-
+    highlight_the_pdfs(list_of_groups_of_plagiarized,"./files/Pdfs")
+    upload_pdfs_to_firebase("./files/Pdfs/highlighted_pdfs")
     i=0
     for item in list_of_groups_of_plagiarized:
         print(i, item)
@@ -59,6 +60,34 @@ def download_pdfs(download_links, download_directory):
 
     return downloaded_files
 
+
+cred = credentials.Certificate("./files/jsonkey.json")  
+initialize_app(cred, {
+    'storageBucket': "classroom-minor.appspot.com"
+})
+# Initialize Firebase Storage client
+bucket = storage.bucket()
+
+def upload_pdfs_to_firebase(pdf_folder_path):
+
+    destination_folder = "Highlighted_pdfs/"
+
+    # Iterate over PDF files in the folder
+    for filename in os.listdir(pdf_folder_path):
+        if filename.endswith('.pdf'):
+            pdf_file_path = os.path.join(pdf_folder_path, filename)
+            # blob = bucket.blob(destination_folder+filename)
+            # blob.upload_from_filename(pdf_file_path)
+            # print(f"Uploaded {filename} to Firebase Storage.")
+            destination_blob = bucket.blob(destination_folder + filename)
+            
+            # Check if the file already exists in the destination folder
+            if not destination_blob.exists():
+                # Upload the file only if it doesn't exist already
+                destination_blob.upload_from_filename(pdf_file_path)
+                print(f"Uploaded {filename} to Firebase Storage in the highlighted_pdfs folder.\n")
+            else:
+                print(f"{filename} already exists in Firebase Storage. Skipping upload.\n")
 
 
 if __name__ == '__main__':

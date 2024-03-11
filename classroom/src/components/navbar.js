@@ -38,7 +38,7 @@ function Navbar() {
               // src="https://1000logos.net/wp-content/uploads/2021/05/Google-logo.png"
               src="./newLogo.png"
               //src="https://1000logos.net/wp-content/uploads/2020/10/Duolingo-logo.png"
-              alt="Google Logo"
+              alt="Logo"
               className="navbar__logo"
             />{" "}
           </Link>

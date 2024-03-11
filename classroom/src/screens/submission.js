@@ -84,17 +84,17 @@ function Submission() {
     setPdfselected((prevIndex) => (prevIndex > 0 ? prevIndex - 1 : prevIndex));
   };
 
-  const RenderHighlighted = async(list) => {
-    console.log("Plagiarized ",list);
-    try {
-      const response = await axios.post("http://localhost:5000/get-highlighted-pdfs", { list });
-      const pdfLinks = response.data;
-      console.log(pdfLinks);
-      // setPdfLinks(pdfLinks); 
-    } catch (error) {
-      console.error("Error fetching PDFs:", error);
-    }
-  };
+  // const RenderHighlighted = async(list) => {
+  //   console.log("Plagiarized ",list);
+  //   try {
+  //     const response = await axios.post("http://localhost:5000/get-highlighted-pdfs", { list });
+  //     const pdfLinks = response.data;
+  //     console.log(pdfLinks);
+  //     // setPdfLinks(pdfLinks); 
+  //   } catch (error) {
+  //     console.error("Error fetching PDFs:", error);
+  //   }
+  // };
 
   return (
     <div className="class">
@@ -134,7 +134,7 @@ function Submission() {
                   ))}
                 </ul>
               </div>
-              <button className="list_button group_button" onClick={() => RenderHighlighted(group)}>View pdfs</button>
+              {/* <button className="list_button group_button" onClick={() => RenderHighlighted(group)}>View pdfs</button> */}
             </div>
           ))}
         </ol>

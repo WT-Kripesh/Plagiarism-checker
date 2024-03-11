@@ -133,5 +133,6 @@ system/files/highlighted_pdfs/*.pdf
 system/__pycache__/*.pyc
 
 system/__pycache__/
-system/pdfs
+system/files
 system/Pdfs
+system/files/Pdfs/file3.pdf
