@@ -30,13 +30,17 @@ function Navbar() {
           <IconButton title="Menu">
             <MenuIcon />
           </IconButton>
-          <Link to="/dashboard" style={{ textDecoration: 'none', color: 'inherit' }}>
-          <img
-            // src="https://1000logos.net/wp-content/uploads/2021/05/Google-logo.png"
-            src ="https://1000logos.net/wp-content/uploads/2020/10/Duolingo-logo.png"
-            alt="Google Logo"
-            className="navbar__logo"
-          />{" "}
+          <Link
+            to="/dashboard"
+            style={{ textDecoration: "none", color: "inherit" }}
+          >
+            <img
+              // src="https://1000logos.net/wp-content/uploads/2021/05/Google-logo.png"
+              src="./newLogo.png"
+              //src="https://1000logos.net/wp-content/uploads/2020/10/Duolingo-logo.png"
+              alt="Google Logo"
+              className="navbar__logo"
+            />{" "}
           </Link>
           <span>Classroom</span>
         </div>
@@ -53,7 +57,7 @@ function Navbar() {
           </IconButton>
           <IconButton onClick={logout} title="Logout">
             <Avatar src={user?.photoURL} />
-          </IconButton >
+          </IconButton>
           <Menu
             id="simple-menu"
             anchorEl={anchorEl}
@@ -61,22 +65,26 @@ function Navbar() {
             open={Boolean(anchorEl)}
             onClose={handleClose}
           >
-            {!createOpened && <MenuItem
-              onClick={() => {
-                setCreateOpened(true);
-                handleClose();
-              }}
-            >
-              Create Class
-            </MenuItem>}
-            {!joinOpened && <MenuItem
-              onClick={() => {
-                setJoinOpened(true);
-                handleClose();
-              }}
-            >
-              Join Class
-            </MenuItem>}
+            {!createOpened && (
+              <MenuItem
+                onClick={() => {
+                  setCreateOpened(true);
+                  handleClose();
+                }}
+              >
+                Create Class
+              </MenuItem>
+            )}
+            {!joinOpened && (
+              <MenuItem
+                onClick={() => {
+                  setJoinOpened(true);
+                  handleClose();
+                }}
+              >
+                Join Class
+              </MenuItem>
+            )}
           </Menu>
         </div>
       </nav>

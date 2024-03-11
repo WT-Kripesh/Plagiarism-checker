@@ -122,6 +122,9 @@ dist
 # Stores VSCode versions used for testing VSCode extensions
 .vscode-test
 
+#virtual environment
+.venv/
+
 # yarn v2
 .yarn/cache
 .yarn/unplugged
@@ -134,3 +137,4 @@ system/__pycache__/*.pyc
 
 system/__pycache__/
 system/pdfs
+system/Pdfs
