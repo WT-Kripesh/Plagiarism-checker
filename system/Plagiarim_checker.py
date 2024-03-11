@@ -167,6 +167,5 @@ def highlight_the_pdfs(get_list_of_groups_of_plagiarized , source_folder):
     for i in range(len(get_list_of_groups_of_plagiarized)):
         generate_highlight_text_pdf_file(source_folder , f"highlighted_pdfs", get_list_of_groups_of_plagiarized[i])
 
-#Just pass the list which contains groups of plagiarized documents.
-source_folder = ""          #Shayad tmro case maa yo downloaded_files hola. jastai ki kun folder ko plagiarism check gardai xau tei folder source folder hunxa
-highlight_the_pdfs(get_list_of_groups_of_plagiarized , source_folder)
+# source_folder = ".files"
+# highlight_the_pdfs(get_list_of_groups_of_plagiarized , source_folder)
