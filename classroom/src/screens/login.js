@@ -21,7 +21,7 @@ function Login() {
       return;
     }
     if (user) navigate("/dashboard");
-  }, [user, loading,navigate]);
+  }, [user, loading, navigate]);
   useEffect(() => {
     let timer;
     if (loginError) {
@@ -46,7 +46,8 @@ function Login() {
     <div className="login">
       <div className="login__container">
         <img
-          src="https://1000logos.net/wp-content/uploads/2020/10/Duolingo-Logo-2013.png"
+          src="./newLogo.png"
+          //src="https://1000logos.net/wp-content/uploads/2020/10/Duolingo-Logo-2013.png"
           alt="Classroom"
           className="image"
         />
