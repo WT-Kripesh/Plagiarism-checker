@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, redirect } from "react-router-dom";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { db, auth, getAllDownloadURLs } from "../components/firebase";
 import "./styles/submission.css";
@@ -85,16 +85,22 @@ function Submission() {
         </button>
 
       <div className="grouplist_container">
-        <p className="group_list">List of groups of plagiarized</p>
+        <div className="inside_container" style={{justifyContent:'center'}}>
+        <img src="https://1000logos.net/wp-content/uploads/2024/02/Alert-Emoji.png" alt="!!" className="image"/>
+        <p className="group_list">Plagiarism found</p>
+        </div>
         <ol className="file_list">                {/* list of files */}
         {listOfGroups.map((group, index) => (
 
         <div key={index} className="inside_container">
+        <div className="inside_container" style={{justifyContent:'center'}}>
+        <img src="https://1000logos.net/wp-content/uploads/2024/02/Two-Exclamation-Marks-Emoji.png" alt="Caution" className="image"/>
         <ul >
             {group.map((item, idx) => (
                 <p key={idx}>{item}</p>           //each file
             ))}
         </ul>
+        </div>
         <button className="list_button group_button">View pdfs</button>
         </div>
         ))
@@ -114,9 +120,9 @@ function Submission() {
     {pdfSelected === index && (
       <div>
         <div className="pdf__navigate">
-        {index > 0 && <button onClick={handlePreviousPdf}>Previous</button>}
-          {index < downloadLinks.length - 1 && <button onClick={handleNextPdf}>Next</button>}
-          <button onClick={handleClosePdf}>Close</button>
+        {index > 0 && <button onClick={handlePreviousPdf}>{"◄--  "}Previous</button>}
+          {index < downloadLinks.length - 1 && <button onClick={handleNextPdf}>Next{"   --►"}</button>}
+          <button style={{color: 'rgb(94, 19, 23)'}} onClick={handleClosePdf}>Close  X</button>
         </div>
         <object
           data={linkObj.downloadURL}

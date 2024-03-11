@@ -140,33 +140,33 @@ def get_list_of_groups_of_plagiarized(downloaded_files):
 # index_of_list = int (input("Enter the index from the list of which you wanna see/generate plagiarized part."))
 # selected_list = list_of_groups_of_plagiarized[index_of_list]
 
-def highlight_word_in_pdf(pdf_path , destination_path , common_words):
-    doc = fitz.open(pdf_path)
-    for page in doc:
-        for word in common_words:
-            for idx, found_rect in enumerate(page.search_for(word)):
-                page.add_highlight_annot(found_rect)
-    temp_path = ((pdf_path).rsplit('/',1))[1]
-    doc.save(destination_path+'/'+temp_path)
-    doc.close()
+# def highlight_word_in_pdf(pdf_path , destination_path , common_words):
+#     doc = fitz.open(pdf_path)
+#     for page in doc:
+#         for word in common_words:
+#             for idx, found_rect in enumerate(page.search_for(word)):
+#                 page.add_highlight_annot(found_rect)
+#     temp_path = ((pdf_path).rsplit('/',1))[1]
+#     doc.save(destination_path+'/'+temp_path)
+#     doc.close()
 
-def generate_highlight_text_pdf_file(source_folder, destination_folder, file_list):
-    destination_folder = source_folder + '/' + destination_folder
-    if not os.path.exists(destination_folder):
-        os.makedirs(destination_folder)
+# def generate_highlight_text_pdf_file(source_folder, destination_folder, file_list):
+#     destination_folder = source_folder + '/' + destination_folder
+#     if not os.path.exists(destination_folder):
+#         os.makedirs(destination_folder)
     
-    pdf_list_path = ["./"+source_folder+"/"+file_path for file_path in file_list]
-    texts = [tokenize_the_text(extract_text_from_pdf(file_path), 5) for file_path in pdf_list_path]
-    common_words = set(texts[0]).intersection(*texts[1:])
-    # print(common_words)
-    for file_path in pdf_list_path:
-        if not os.path.exists(destination_folder + "/" + file_path):
-            print(f"Highlighting {file_path} Document." )
-            highlight_word_in_pdf(file_path, destination_folder, common_words)   
-def highlight_the_pdfs(get_list_of_groups_of_plagiarized , source_folder):
-    for i in range(len(get_list_of_groups_of_plagiarized)):
-        generate_highlight_text_pdf_file(source_folder , f"highlighted_pdfs", get_list_of_groups_of_plagiarized[i])
+#     pdf_list_path = ["./"+source_folder+"/"+file_path for file_path in file_list]
+#     texts = [tokenize_the_text(extract_text_from_pdf(file_path), 5) for file_path in pdf_list_path]
+#     common_words = set(texts[0]).intersection(*texts[1:])
+#     # print(common_words)
+#     for file_path in pdf_list_path:
+#         if not os.path.exists(destination_folder + "/" + file_path):
+#             print(f"Highlighting {file_path} Document." )
+#             highlight_word_in_pdf(file_path, destination_folder, common_words)   
+# def highlight_the_pdfs(get_list_of_groups_of_plagiarized , source_folder):
+#     for i in range(len(get_list_of_groups_of_plagiarized)):
+#         generate_highlight_text_pdf_file(source_folder , f"highlighted_pdfs", get_list_of_groups_of_plagiarized[i])
 
-#Just pass the list which contains groups of plagiarized documents.
-source_folder = ""          #Shayad tmro case maa yo downloaded_files hola. jastai ki kun folder ko plagiarism check gardai xau tei folder source folder hunxa
-highlight_the_pdfs(get_list_of_groups_of_plagiarized , source_folder)
+# #Just pass the list which contains groups of plagiarized documents.
+# source_folder = ""          #Shayad tmro case maa yo downloaded_files hola. jastai ki kun folder ko plagiarism check gardai xau tei folder source folder hunxa
+# highlight_the_pdfs(get_list_of_groups_of_plagiarized , source_folder)
