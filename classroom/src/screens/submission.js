@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams, useNavigate, redirect } from "react-router-dom";
+import { useParams, useNavigate} from "react-router-dom";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { db, auth, getAllDownloadURLs } from "../components/firebase";
 import "./styles/submission.css";
@@ -14,24 +14,12 @@ function Submission() {
   const [listOfGroups, setListOfGroups] = useState([]);
   const navigate = useNavigate();
   const [pdfSelected,setPdfselected] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     if (loading) return;
     if (!user) navigate("/");
   }, [loading, user, navigate]);
-
-  useEffect(() => {
-    async function fetchLinks() {
-      try {
-        const links = await getAllDownloadURLs(authorId);
-        setDownloadLinks(links);
-      } catch (error) {
-        console.error("Error fetching download links:", error);
-      }
-    }
-    fetchLinks();
-  }, [authorId]); 
-  
   useEffect(() => {
     onSnapshot(doc(db, "classes", id), (snapshot) => {
       const data = snapshot.data();
@@ -40,18 +28,47 @@ function Submission() {
     });
   }, [id, navigate]);
 
-  const handleCheck = async () => {
-    try {
-      const response = await axios.post("http://localhost:5000/submit-pdfs", {
-        downloadLinks,
-      });
-      console.log(response.data);
-      const list_of_groups_of_plagiarized = response.data.data;
-      setListOfGroups(list_of_groups_of_plagiarized);
-    } catch (error) {
-      console.error("Error submitting PDF links:", error);
+
+
+  useEffect(() => {
+    async function fetchLinks() {
+      try {
+        const links = await getAllDownloadURLs(authorId);
+        setDownloadLinks(links);
+        console.log('Links fetched');
+      } catch (error) {
+        console.error("Error fetching download links:", error);
+      }
     }
-  };
+    fetchLinks();
+  }, [authorId]); 
+
+  useEffect(() => {
+    async function handleCheck() {
+      try {
+        const response = await axios.post("http://localhost:5000/submit-pdfs", {
+          downloadLinks,
+        });
+        console.log(response.data);
+        const list_of_groups_of_plagiarized = response.data.data;
+        setListOfGroups(list_of_groups_of_plagiarized);
+      } catch (error) {
+        console.error("Error submitting PDF links:", error);
+      }finally {
+        setIsLoading(false); // Set loading state to false regardless of success or failure
+      }
+    }
+    if (downloadLinks.length > 0) {
+      console.log("links sent");
+      handleCheck();
+    }
+  }, [downloadLinks]);
+
+
+
+
+
+
   const handleSelectPdf = (index) => {
     setPdfselected(index);
   }
@@ -67,6 +84,18 @@ function Submission() {
     setPdfselected((prevIndex) => (prevIndex > 0 ? prevIndex - 1 : prevIndex));
   };
 
+  const RenderHighlighted = async(list) => {
+    console.log("Plagiarized ",list);
+    try {
+      const response = await axios.post("http://localhost:5000/get-highlighted-pdfs", { list });
+      const pdfLinks = response.data;
+      console.log(pdfLinks);
+      // setPdfLinks(pdfLinks); 
+    } catch (error) {
+      console.error("Error fetching PDFs:", error);
+    }
+  };
+
   return (
     <div className="class">
       <div className="class__nameBox">
@@ -80,33 +109,38 @@ function Submission() {
         </div>
       </div>
 
-      <button onClick={handleCheck} className="check_plag_button">
-          check Plagiarism
-        </button>
-
+      {isLoading ? (
+  <div className="group_list">Checking Plagiarism..</div>
+) : (
+  <div>
+ 
       <div className="grouplist_container">
-        <div className="inside_container" style={{justifyContent:'center'}}>
-        <img src="https://1000logos.net/wp-content/uploads/2024/02/Alert-Emoji.png" alt="!!" className="image"/>
-        <p className="group_list">Plagiarism found</p>
-        </div>
-        <ol className="file_list">                {/* list of files */}
-        {listOfGroups.map((group, index) => (
-
-        <div key={index} className="inside_container">
-        <div className="inside_container" style={{justifyContent:'center'}}>
-        <img src="https://1000logos.net/wp-content/uploads/2024/02/Two-Exclamation-Marks-Emoji.png" alt="Caution" className="image"/>
-        <ul >
-            {group.map((item, idx) => (
-                <p key={idx}>{item}</p>           //each file
-            ))}
-        </ul>
-        </div>
-        <button className="list_button group_button">View pdfs</button>
-        </div>
-        ))
-        }
+        <div className="inside_container" style={{ justifyContent: 'center' }}>
+          <img src="https://1000logos.net/wp-content/uploads/2024/02/Alert-Emoji.png" alt="!!" className="image" />
+          {listOfGroups.length === 0 ? (
+          <p className="group_list"> No Plagiarism found.</p>
+          ) : (
+            <p className="group_list">Plagiarism found !</p>
+          )}        
+          </div>
+        <ol className="file_list">
+          {listOfGroups.map((group, index) => (
+            <div key={index} className="inside_container">
+              <div className="inside_container" style={{ justifyContent: 'center' }}>
+                <img src="https://1000logos.net/wp-content/uploads/2024/02/Two-Exclamation-Marks-Emoji.png" alt="Caution" className="image" />
+                <ul>
+                  {group.map((item, idx) => (
+                    <p key={idx}>{item}</p> // each file
+                  ))}
+                </ul>
+              </div>
+              <button className="list_button group_button" onClick={() => RenderHighlighted(group)}>View pdfs</button>
+            </div>
+          ))}
         </ol>
       </div>
+  </div>
+)}
 
       <div className="file_list">
         <ol className="file_list_ol">
@@ -115,14 +149,16 @@ function Submission() {
     <div className="inside_container">
     <p>{linkObj.filename}</p>
     
-    {pdfSelected !== index && (<button className="list_button" onClick={() => handleSelectPdf(index)}>View pdf</button>)}
+    {pdfSelected !== index ? (<button className="list_button" onClick={() => handleSelectPdf(index)}>View pdf</button>)
+    :(<button className='list_button group_button' onClick={handleClosePdf}>Close  X</button>)  
+  }
     </div>
     {pdfSelected === index && (
       <div>
         <div className="pdf__navigate">
         {index > 0 && <button onClick={handlePreviousPdf}>{"◄--  "}Previous</button>}
+        
           {index < downloadLinks.length - 1 && <button onClick={handleNextPdf}>Next{"   --►"}</button>}
-          <button style={{color: 'rgb(94, 19, 23)'}} onClick={handleClosePdf}>Close  X</button>
         </div>
         <object
           data={linkObj.downloadURL}
