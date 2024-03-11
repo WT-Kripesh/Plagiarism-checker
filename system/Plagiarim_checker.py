@@ -96,6 +96,7 @@ def get_list_of_groups_of_plagiarized(downloaded_files):
     pdf_list = [filename for filename, _ in downloaded_files]  # Extract filenames
     pdf_list_path = [file_path for _, file_path in downloaded_files]
     visited = set()
+    temp_list_of_groups_of_plagiarized = defaultdict()
     
     for pdf1, pdf2 in combinations(pdf_list_path, 2):
         if (pdf1, pdf2) not in visited and (pdf2, pdf1) not in visited:
@@ -110,6 +111,7 @@ def get_list_of_groups_of_plagiarized(downloaded_files):
             
             if similarity >= threshold:
                 group = {pdf1, pdf2}
+                temp_list_of_groups_of_plagiarized [(pdf1.rsplit('/',1)[1] , pdf2.rsplit('/',1)[1])] = similarity
                 for existing_group in list_of_groups_of_plagiarized:
                     if pdf1 in existing_group or pdf2 in existing_group:
                         group.update(existing_group)
@@ -119,6 +121,7 @@ def get_list_of_groups_of_plagiarized(downloaded_files):
 
     list_of_groups_of_plagiarized = [list(group_list) for group_list in list_of_groups_of_plagiarized]
     list_of_groups = []
+    list_of_avg_similarity = []
     for group_of_item in list_of_groups_of_plagiarized:
         _group = []
         for item in group_of_item:
@@ -127,7 +130,22 @@ def get_list_of_groups_of_plagiarized(downloaded_files):
             _index = pdf_list_path.index(item)
             _group.append(pdf_list[_index])
         list_of_groups.append(_group)
-    return list_of_groups
+    
+    all_keys_available_in_temp_list_of_groups_of_plagiarized = list(temp_list_of_groups_of_plagiarized.keys())
+    for group in list_of_groups:
+        count = 0
+        avg_similarity = 0
+        for pdf1, pdf2 in combinations(group, 2):
+            if (pdf1,pdf2) in all_keys_available_in_temp_list_of_groups_of_plagiarized:
+                avg_similarity += temp_list_of_groups_of_plagiarized[(pdf1, pdf2)]
+            else:
+                avg_similarity += temp_list_of_groups_of_plagiarized[(pdf2, pdf1)]
+            count += 1
+            
+        avg_similarity /= count
+        list_of_avg_similarity.append(avg_similarity)
+
+    return list_of_groups, list_of_avg_similarity
 
 # list_of_groups_of_plagiarized = get_list_of_groups_of_plagiarized("files")
 
