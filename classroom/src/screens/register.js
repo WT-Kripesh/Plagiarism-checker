@@ -22,13 +22,14 @@ function Register() {
   useEffect(() => {
     if (loading) return;
     if (user) navigate("/dashboard");
-  }, [user, loading,navigate]);
+  }, [user, loading, navigate]);
   return (
     <div className="register">
       <div className="register__container">
-        <img 
-            src ="https://1000logos.net/wp-content/uploads/2020/10/Duolingo-Logo-2013.png"
-            alt="Classroom"
+        <img
+          src="./newLogo.png"
+          //src ="https://1000logos.net/wp-content/uploads/2020/10/Duolingo-Logo-2013.png"
+          alt="Classroom"
           className="image"
         />
         <input
@@ -61,8 +62,8 @@ function Register() {
         >
           Register with Google
         </button>
-        <div style={{fontSize:'16px'}}>
-          Already have an account?  <Link to="/">Login</Link> now.
+        <div style={{ fontSize: "16px" }}>
+          Already have an account? <Link to="/">Login</Link> now.
         </div>
       </div>
     </div>
