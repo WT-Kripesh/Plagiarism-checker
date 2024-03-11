@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { db, auth, getAllDownloadURLs } from "../components/firebase";
-import "./styles/Class1.css";
+import "./styles/submission.css";
 import { doc, onSnapshot } from "firebase/firestore";
 import axios from "axios";
 
@@ -13,6 +13,7 @@ function Submission() {
   const [downloadLinks, setDownloadLinks] = useState([]);
   const [listOfGroups, setListOfGroups] = useState([]);
   const navigate = useNavigate();
+  const [pdfSelected,setPdfselected] = useState(null);
 
   useEffect(() => {
     if (loading) return;
@@ -51,50 +52,89 @@ function Submission() {
       console.error("Error submitting PDF links:", error);
     }
   };
+  const handleSelectPdf = (index) => {
+    setPdfselected(index);
+  }
+  const handleClosePdf = () => {
+    setPdfselected(null);
+  };
+
+  const handleNextPdf = () => {
+    setPdfselected((prevIndex) => (prevIndex < downloadLinks.length - 1 ? prevIndex + 1 : prevIndex));
+  };
+
+  const handlePreviousPdf = () => {
+    setPdfselected((prevIndex) => (prevIndex > 0 ? prevIndex - 1 : prevIndex));
+  };
 
   return (
     <div className="class">
       <div className="class__nameBox">
         <div className="class__name">
           {ClassData?.name}
-          <p>{ClassData?.creatorName}</p>
+          <p style={{fontSize: '24px' ,fontWeight: '400' }}>{ClassData?.creatorName}</p>
         </div>
         <div className="class_id">
-          <div>Class Id: {id}</div>
+          <p>Class Id: {id}</p>
           Announcement Id: {authorId}
         </div>
       </div>
+
       <button onClick={handleCheck} className="check_plag_button">
-        check Plagiarism
-      </button>
-      <div className="donwload_container">
+          check Plagiarism
+        </button>
+
+      <div className="grouplist_container">
         <p className="group_list">List of groups of plagiarized</p>
-        <ol className="file_list">
+        <ol className="file_list">                {/* list of files */}
         {listOfGroups.map((group, index) => (
-    <div key={index} className="grouplist_container">
-        <ul className="download_container">
+
+        <div key={index} className="inside_container">
+        <ul >
             {group.map((item, idx) => (
-                <p key={idx}>{item}</p>
+                <p key={idx}>{item}</p>           //each file
             ))}
-        <button className="list__button">View pdfs</button>
         </ul>
-    </div>
-
-))
-}
-
+        <button className="list_button group_button">View pdfs</button>
+        </div>
+        ))
+        }
         </ol>
       </div>
+
       <div className="file_list">
         <ol className="file_list_ol">
-          {downloadLinks.map((linkObj, index) => (
-            <div key={index} className="download_container">
-              <p>Filename: {linkObj.filename}</p>
-              <a href={linkObj.downloadURL} target="_blank" rel="noreferrer">
-                View submission
-              </a>
-            </div>
-          ))}
+        {downloadLinks.map((linkObj, index) => (
+  <div key={index} className="grouplist_container">
+    <div className="inside_container">
+    <p>{linkObj.filename}</p>
+    
+    {pdfSelected !== index && (<button className="list_button" onClick={() => handleSelectPdf(index)}>View pdf</button>)}
+    </div>
+    {pdfSelected === index && (
+      <div>
+        <div className="pdf__navigate">
+        {index > 0 && <button onClick={handlePreviousPdf}>Previous</button>}
+          {index < downloadLinks.length - 1 && <button onClick={handleNextPdf}>Next</button>}
+          <button onClick={handleClosePdf}>Close</button>
+        </div>
+        <object
+          data={linkObj.downloadURL}
+          type="application/pdf"
+          width="100%"
+          height="1000px"
+        >
+          <p>
+            Unable to load. You can{' '}
+            <a href={linkObj.downloadURL}>download the PDF file</a> instead.
+          </p>
+        </object>
+
+      </div>
+    )}
+  </div>
+))}
+
         </ol>
       </div>
     </div>

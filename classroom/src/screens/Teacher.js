@@ -8,10 +8,10 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { useNavigate, useParams } from "react-router-dom";
 import Announcement1 from "../components/Announcement1";
 import { auth, db, listFilesAndDirectories } from "../components/firebase";
-import "./styles/Class1.css";
+import "./styles/Teacher.css";
 import { getDoc, setDoc, doc, onSnapshot } from "firebase/firestore";
 
-function Class() {
+function Teacher() {
   const [classData, setClassData] = useState({});
   const [announcementContent, setAnnouncementContent] = useState("");
   const [posts, setPosts] = useState([]);
@@ -109,4 +109,4 @@ function Class() {
   );
 }
 
-export default Class;
+export default Teacher;
