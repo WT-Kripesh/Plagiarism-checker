@@ -3,7 +3,7 @@ from flask_cors import CORS
 import requests
 import os
 
-from Plagiarim_checker import get_list_of_groups_of_plagiarized
+from Plagiarim_checker import get_list_of_groups_of_plagiarized,highlight_the_pdfs
 
 app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes
@@ -18,9 +18,11 @@ def submit_pdfs():
         download_url = link_obj["downloadURL"]
         download_links.append((filename, download_url))
     print("hello1")
-    downloaded_files = download_pdfs(download_links, "./pdfs")
+
+    downloaded_files = download_pdfs(download_links, "./Pdfs")
     list_of_groups_of_plagiarized = get_list_of_groups_of_plagiarized(downloaded_files)
-    # print("hello2",list_of_groups_of_plagiarized)
+    print("highlighting started")
+    highlight_the_pdfs(list_of_groups_of_plagiarized,"./Pdfs")
 
     i=0
     for item in list_of_groups_of_plagiarized:
