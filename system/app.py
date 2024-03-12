@@ -34,7 +34,7 @@ def recieve_pdfs():
         print(i, item)
         i+=1
     # Return some response back to the frontend if needed
-    return jsonify({'success': True, 'message': 'PDF links submitted successfully','data':list_of_groups_of_plagiarized})
+    return jsonify({'success': True, 'message': 'Plagiarism checked successfully','data':list_of_groups_of_plagiarized})
 
 
 def download_pdfs(download_links, download_directory):
@@ -73,25 +73,26 @@ initialize_app(cred, {
 bucket = storage.bucket()
 
 def upload_pdfs_to_firebase(pdf_folder_path):
-
     destination_folder = 'Highlighted_pdfs/'
 
     # Iterate over PDF files in the folder
     for filename in os.listdir(pdf_folder_path):
         if filename.endswith('.pdf'):
             pdf_file_path = os.path.join(pdf_folder_path, filename)
-            # blob = bucket.blob(destination_folder+filename)
-            # blob.upload_from_filename(pdf_file_path)
-            # print(f"Uploaded {filename} to Firebase Storage.")
             destination_blob = bucket.blob(destination_folder + filename)
             
-            # # Check if the file already exists in the destination folder
-            # if not destination_blob.exists():
-            #     # Upload the file only if it doesn't exist already
-            destination_blob.upload_from_filename(pdf_file_path)
+            # Upload the file to Firebase Storage
+            with open(pdf_file_path, 'rb') as f:
+                destination_blob.upload_from_file(f)
+            
+            # Set metadata for the blob
+            destination_blob.metadata = {
+                'contentType': 'application/pdf',  # Explicitly set Content-Type to PDF
+                'contentDisposition': f'attachment; filename="{filename}"'  # Set Content-Disposition to attachment with filename
+            }
+            destination_blob.patch()  # Update metadata
+            
             print(f"Uploaded {filename} to Firebase Storage in the highlighted_pdfs folder.\n")
-            # else:
-            #     print(f"{filename} already exists in Firebase Storage. Skipping upload.\n")
 
 
 if __name__ == '__main__':

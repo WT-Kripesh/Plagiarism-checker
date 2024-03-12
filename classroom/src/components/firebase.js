@@ -161,19 +161,51 @@ async function getAllDownloadURLs(directory) {
     const downloadLinks = await Promise.all(
       list.map(async (filename) => {
         const filesRef = ref(storage, `files/${directory}/${filename}`);
-        console.log("files ",filesRef)
+        // console.log("files ",filesRef)
         const downloadURL = await getDownloadURL(filesRef);
-        console.log(filename,downloadURL);
+        // console.log(filename,downloadURL);
         return { filename, downloadURL };
       })
     );
     return downloadLinks;
+    
 
   } catch (error) {
     console.error("Error getting download URLs:", error);
     throw error;
   }
 }
+async function getAllhighlightedURLs() {
+  try {
+    const listRef = ref(storage, `Highlighted_pdfs/`);
+    const result = await listAll(listRef);
+    const list=result.items.map(item => item.name);
+
+    // const urls = await Promise.all(list.map(async (filename) => {
+    //   const filesRef = ref(storage, `files/${directory}/${filename}`);
+    //   const downloadURL = await getDownloadURL(filesRef);
+    //   return { [filename]: downloadURL };
+    // }));
+    // return urls;
+    const downloadLinks = await Promise.all(
+      list.map(async (filename) => {
+        const filesRef = ref(storage, `Highlighted_pdfs/`);
+        // console.log("files ",filesRef)
+        const downloadURL = await getDownloadURL(filesRef);
+        console.log(filename,downloadURL);
+        return { filename, downloadURL };
+      })
+    );
+
+    return downloadLinks;
+    
+
+  } catch (error) {
+    console.error("Error getting download URLs:", error);
+    throw error;
+  }
+}
+
 
 
 
@@ -192,4 +224,5 @@ export {
   uploadFileToStorage,
   listFilesAndDirectories,
   getAllDownloadURLs,
+  getAllhighlightedURLs,
 };
