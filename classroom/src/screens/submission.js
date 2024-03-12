@@ -11,6 +11,7 @@ function Submission() {
   const [ClassData, setClassData] = useState({});
   const [user, loading] = useAuthState(auth);
   const [downloadLinks, setDownloadLinks] = useState([]);
+  const [filteredPDFs,setFiltered] = useState([]);
   const [highlightedPdfs, setHighlightedpdfs] = useState([]);
   const [listOfGroups, setListOfGroups] = useState([]);
   const [Scores,setScores] = useState([]);
@@ -97,9 +98,13 @@ function Submission() {
     setPdfselected((prevIndex) => (prevIndex > 0 ? prevIndex - 1 : prevIndex));
   };
 
-  const handleSelectPdfH = (index) => {
+  const handleSelectPdfH = (index,group) => {
     setPdfselectedh(index);
     console.log("Firebase error: Error loading highlighted pdfs")
+    const filteredPDFs = highlightedPdfs.filter(pdf =>
+      group.includes(pdf.filename)
+    );
+    setFiltered(filteredPDFs);
   }
   // const RenderHighlighted = async(list) => {
   //   console.log("Plagiarized ",list);
@@ -153,25 +158,27 @@ let dummy_pdf="";
                       </ul>
                     </div>
                     <p>{Scores[index].toFixed(3)} % Matching</p>
-                    {pdfSelectedh !== index ? (<button className="list_button group_button" onClick={() => handleSelectPdfH(index)}>View pdfs</button>)
+                    {pdfSelectedh !== index ? (<button className="list_button group_button" onClick={() => handleSelectPdfH(index,group)}>View pdfs</button>)
                       : (<button className='list_button group_button' onClick={()=>handleClosePdf()}>Close  X</button>)
                     }
                   </div>
-
+                 
                   {pdfSelectedh === index && pdfSelectedh !== null && (
-                    <div>
+                    <div className="inside_container">
                       {/* <div className="pdf__navigate">
         {index > 0 && <button onClick={handlePreviousPdf}>{"◄--  "}Previous</button>}
         
           {index < downloadLinks.length - 1 && <button onClick={handleNextPdf}>Next{"   --►"}</button>}
         </div> */}
-                      <object
-                        data={highlightedPdfs.linkObj}
-                        type="application/pdf"
-                        width="100%"
-                        height="1000px"
-                      >
-                      </object>
+                      {filteredPDFs.map(pdf => (
+                <object
+                    key={pdf.filename}
+                    data={pdf.downloadURL}
+                    type="application/pdf"
+                    width="100%"
+                    height="1000px"
+                />
+            ))}
 
                     </div>
                   )}

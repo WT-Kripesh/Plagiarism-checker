@@ -156,7 +156,7 @@ async function getAllhighlightedURLs() {
     // return urls;
     const downloadLinks = await Promise.all(
       list.map(async (filename) => {
-        const filesRef = ref(storage, `Highlighted_pdfs/`);
+        const filesRef = ref(storage, `Highlighted_pdfs/${filename}`);
         // console.log("files ",filesRef)
         const downloadURL = await getDownloadURL(filesRef);
         // console.log(filename,downloadURL);
