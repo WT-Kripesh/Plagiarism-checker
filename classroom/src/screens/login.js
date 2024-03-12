@@ -50,6 +50,7 @@ function Login() {
           //src="https://1000logos.net/wp-content/uploads/2020/10/Duolingo-Logo-2013.png"
           alt="Classroom"
           className="image"
+          style={{ height: "150px", width: "auto", marginBottom: "20px" }}
         />
         <input
           type="text"

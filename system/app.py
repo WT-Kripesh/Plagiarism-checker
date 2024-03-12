@@ -21,7 +21,11 @@ def recieve_pdfs():
     print("hello1")
 
     downloaded_files = download_pdfs(download_links, "./files/Pdfs")
-    list_of_groups_of_plagiarized = get_list_of_groups_of_plagiarized(downloaded_files)
+    list_of_groups_of_plagiarized_and_scores = get_list_of_groups_of_plagiarized(downloaded_files)
+    
+    list_of_groups_of_plagiarized = list_of_groups_of_plagiarized_and_scores[0]
+    list_of_corresponding_group_scores = list_of_groups_of_plagiarized_and_scores[1]
+
     print("highlighting started")
     highlight_the_pdfs(list_of_groups_of_plagiarized,"./files/Pdfs")
     # upload_pdfs_to_firebase("./files/Pdfs/highlighted_pdfs")
