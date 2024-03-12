@@ -85,7 +85,7 @@ def calculate_cosine_similarity(file_path_1, file_path_2, n):
     return y * 100
 
 
-threshold = 20
+threshold = 50
 # def get_list_of_groups_of_plagiarized(folder_name):
 #     pdf_list = get_pdf_list(folder_name)
 #     list_of_groups_of_plagiarized = []

@@ -13,6 +13,8 @@ function Submission() {
   const [downloadLinks, setDownloadLinks] = useState([]);
   const [highlightedPdfs, setHighlightedpdfs] = useState([]);
   const [listOfGroups, setListOfGroups] = useState([]);
+  const [Scores,setScores] = useState([]);
+  
   const navigate = useNavigate();
   const [pdfSelected, setPdfselected] = useState(null);
   const [pdfSelectedh, setPdfselectedh] = useState(null);
@@ -45,7 +47,7 @@ function Submission() {
       }
     }
     fetchLinks();
-  }, [authorId], highlightedPdfs);
+  }, [authorId] );
 
   useEffect(() => {
     async function handleCheck() {
@@ -54,8 +56,14 @@ function Submission() {
           downloadLinks,
         });
         console.log(response.data);
-        const list_of_groups_of_plagiarized = response.data.data;
-        setListOfGroups(list_of_groups_of_plagiarized);
+        const { data: listOfGroups, scores } = response.data;
+
+        // Handle the scores as needed
+        console.log("Scores:", scores);
+        
+        // Set the list of plagiarized groups in state
+        setListOfGroups(listOfGroups);
+        setScores(scores);
       } catch (error) {
         console.error("Error submitting PDF links:", error);
       } finally {
@@ -144,6 +152,7 @@ let dummy_pdf="";
                         ))}
                       </ul>
                     </div>
+                    <p>{Scores[index].toFixed(3)} % Matching</p>
                     {pdfSelectedh !== index ? (<button className="list_button group_button" onClick={() => handleSelectPdfH(index)}>View pdfs</button>)
                       : (<button className='list_button group_button' onClick={()=>handleClosePdf()}>Close  X</button>)
                     }

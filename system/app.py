@@ -34,7 +34,7 @@ def recieve_pdfs():
         print(i, item)
         i+=1
     # Return some response back to the frontend if needed
-    return jsonify({'success': True, 'message': 'Plagiarism checked successfully','data':list_of_groups_of_plagiarized})
+    return jsonify({'success': True, 'message': 'Plagiarism checked successfully','data':list_of_groups_of_plagiarized,'scores':list_of_corresponding_group_scores})
 
 
 def download_pdfs(download_links, download_directory):

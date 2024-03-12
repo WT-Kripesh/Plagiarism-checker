@@ -111,41 +111,8 @@ const listFilesAndDirectories = async (directory) => {
   }
   
 };
-const downloadAll = async (directory) => {
-  try {
-    const listRef = ref(storage, `files/${directory}`);
-    const result = await listAll(listRef);
-    const list=result.items.map(item => item.name);
-
-    list.map(async (filename,index) => {
-      console.log(`File ${index + 1}: ${filename}`);
-      const filesRef = ref(storage, `files/${directory}/${filename}`);
-      const downloadURL = await getDownloadURL(filesRef);
-      console.log(`Link ${index + 1}: ${downloadURL}`);
-    //   downloadURL.forEach(url => {
-    //   const link = document.createElement('a');
-    //   link.href = url;
-    //   link.download = url.substring(url.lastIndexOf('/') + 1); // Set the filename
-    //   document.body.appendChild(link);
-    //   link.click();
-    //   document.body.removeChild(link);
-    // });
-  });
     
-  } catch (error) {
-    console.error("Error downloading files:", error);
-    // Handle errors
-  }
-  
-  // getDownloadURL(filesRef)
-  // .then((url) => {
-  //   // Insert url into an <img> tag to "download"
-  // })
-  // .catch((error) => {
-  //   console.log(error.code);
-  //   }
-  // );
-}
+
 async function getAllDownloadURLs(directory) {
   try {
     const listRef = ref(storage, `files/${directory}`);
@@ -192,7 +159,7 @@ async function getAllhighlightedURLs() {
         const filesRef = ref(storage, `Highlighted_pdfs/`);
         // console.log("files ",filesRef)
         const downloadURL = await getDownloadURL(filesRef);
-        console.log(filename,downloadURL);
+        // console.log(filename,downloadURL);
         return { filename, downloadURL };
       })
     );
