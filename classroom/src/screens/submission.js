@@ -5,15 +5,18 @@ import { db, auth, getAllDownloadURLs } from "../components/firebase";
 import "./styles/submission.css";
 import { doc, onSnapshot } from "firebase/firestore";
 import axios from "axios";
+import PdfsViewer from "../components/Pdfviewer";
 
 function Submission() {
   const { id, authorId } = useParams();
   const [ClassData, setClassData] = useState({});
   const [user, loading] = useAuthState(auth);
   const [downloadLinks, setDownloadLinks] = useState([]);
+  const [highlightedPdfs, setHighlightedpdfs] = useState([]);
   const [listOfGroups, setListOfGroups] = useState([]);
   const navigate = useNavigate();
   const [pdfSelected,setPdfselected] = useState(null);
+  const [pdfSelectedh,setPdfselectedh] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -35,7 +38,9 @@ function Submission() {
       try {
         const links = await getAllDownloadURLs(authorId);
         setDownloadLinks(links);
-        console.log('Links fetched');
+        const links1 = await getAllDownloadURLs('Highlighted_pdfs/');
+        setHighlightedpdfs(links1);
+        console.log('highlighted Links fetched',highlightedPdfs);
       } catch (error) {
         console.error("Error fetching download links:", error);
       }
@@ -125,6 +130,7 @@ function Submission() {
           </div>
         <ol className="file_list">
           {listOfGroups.map((group, index) => (
+            <div>
             <div key={index} className="inside_container">
               <div className="inside_container" style={{ justifyContent: 'center' }}>
                 <img src="https://1000logos.net/wp-content/uploads/2024/02/Two-Exclamation-Marks-Emoji.png" alt="Caution" className="image" />
@@ -135,12 +141,19 @@ function Submission() {
                 </ul>
               </div>
               {/* <button className="list_button group_button" onClick={() => RenderHighlighted(group)}>View pdfs</button> */}
+
+            </div>
+                  
             </div>
           ))}
         </ol>
       </div>
   </div>
+
 )}
+  <PdfsViewer 
+                  pdfPaths={[]}
+                  />
 
       <div className="file_list">
         <ol className="file_list_ol">

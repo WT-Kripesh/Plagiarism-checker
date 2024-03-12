@@ -24,7 +24,7 @@ def recieve_pdfs():
     list_of_groups_of_plagiarized = get_list_of_groups_of_plagiarized(downloaded_files)
     print("highlighting started")
     highlight_the_pdfs(list_of_groups_of_plagiarized,"./files/Pdfs")
-    upload_pdfs_to_firebase("./files/Pdfs/highlighted_pdfs")
+    # upload_pdfs_to_firebase("./files/Pdfs/highlighted_pdfs")
     i=0
     for item in list_of_groups_of_plagiarized:
         print(i, item)
@@ -70,7 +70,7 @@ bucket = storage.bucket()
 
 def upload_pdfs_to_firebase(pdf_folder_path):
 
-    destination_folder = "Highlighted_pdfs/"
+    destination_folder = 'Highlighted_pdfs/'
 
     # Iterate over PDF files in the folder
     for filename in os.listdir(pdf_folder_path):
@@ -81,13 +81,13 @@ def upload_pdfs_to_firebase(pdf_folder_path):
             # print(f"Uploaded {filename} to Firebase Storage.")
             destination_blob = bucket.blob(destination_folder + filename)
             
-            # Check if the file already exists in the destination folder
-            if not destination_blob.exists():
-                # Upload the file only if it doesn't exist already
-                destination_blob.upload_from_filename(pdf_file_path)
-                print(f"Uploaded {filename} to Firebase Storage in the highlighted_pdfs folder.\n")
-            else:
-                print(f"{filename} already exists in Firebase Storage. Skipping upload.\n")
+            # # Check if the file already exists in the destination folder
+            # if not destination_blob.exists():
+            #     # Upload the file only if it doesn't exist already
+            destination_blob.upload_from_filename(pdf_file_path)
+            print(f"Uploaded {filename} to Firebase Storage in the highlighted_pdfs folder.\n")
+            # else:
+            #     print(f"{filename} already exists in Firebase Storage. Skipping upload.\n")
 
 
 if __name__ == '__main__':
