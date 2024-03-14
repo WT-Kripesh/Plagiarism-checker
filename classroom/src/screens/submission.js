@@ -101,10 +101,12 @@ function Submission() {
   const handleSelectPdfH = (index,group) => {
     setPdfselectedh(index);
     console.log("Firebase error: Error loading highlighted pdfs")
+
     const filteredPDFs = highlightedPdfs.filter(pdf =>
       group.includes(pdf.filename)
     );
     setFiltered(filteredPDFs);
+    console.log(filteredPDFs);
   }
   // const RenderHighlighted = async(list) => {
   //   console.log("Plagiarized ",list);
@@ -176,9 +178,10 @@ let dummy_pdf="";
                     data={pdf.downloadURL}
                     type="application/pdf"
                     width="100%"
-                    height="1000px"
+                    height="900px"
                 />
-            ))}
+            )
+            )}
 
                     </div>
                   )}

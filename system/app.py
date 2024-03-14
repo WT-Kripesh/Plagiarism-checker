@@ -27,7 +27,7 @@ def recieve_pdfs():
     list_of_corresponding_group_scores = list_of_groups_of_plagiarized_and_scores[1]
 
     print("highlighting started")
-    highlight_the_pdfs(list_of_groups_of_plagiarized,"./files/Pdfs")
+    # highlight_the_pdfs(list_of_groups_of_plagiarized,"./files/Pdfs")
     # upload_pdfs_to_firebase("./files/Pdfs/highlighted_pdfs")
     i=0
     for item in list_of_groups_of_plagiarized:
